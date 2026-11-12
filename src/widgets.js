@@ -172,7 +172,7 @@ window.Tessera = window.Tessera || {};
       return a(
         p.url,
         `<span class="badge${U.isEmoji(p.icon || pf.glyph) ? ' emoji' : ''}" style="--b:${esc(pf.color)}">${esc(p.icon || pf.glyph)}</span>` +
-          `<span class="link-txt"><strong>${esc(p.title || pf.name)}</strong>${p.subtitle ? `<span class="muted">${esc(p.subtitle)}</span>` : ''}</span>` +
+          `<span class="link-txt"><strong>${esc(p.title || pf.name)}</strong>${p.subtitle ? `<span class="muted">${esc(p.subtitle).replace(/(\S)@/g, '$1<wbr>@').replace(/(\S)\//g, '$1<wbr>/')}</span>` : ''}</span>` +
           img + `<span class="arrow" aria-hidden="true">↗</span>`,
         'w-body link'
       );

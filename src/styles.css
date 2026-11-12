@@ -88,7 +88,8 @@ small { font-size: 0.8rem; }
 .link-txt { display: flex; flex-direction: column; margin-top: auto; min-width: 0; }
 .link-txt strong { font-size: 1.02rem; }
 .link-txt span { font-size: .88rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
-.c1 .link-txt span { -webkit-line-clamp: 1; line-clamp: 1; white-space: nowrap; text-overflow: ellipsis; display: block; }
+/* 1×1: two lines of subtitle; long handles (@user@instance) may break anywhere */
+.c1 .link-txt span { font-size: .84rem; line-height: 1.3; overflow-wrap: anywhere; }
 .arrow { position: absolute; top: 16px; right: 18px; font-size: 1rem; opacity: .35; transition: opacity .15s, transform .15s; }
 .w:hover .arrow { opacity: .9; transform: translate(2px, -2px); }
 .c2.r2 .link, .c4.r2 .link { flex-direction: row; align-items: center; gap: 14px; }
