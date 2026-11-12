@@ -161,12 +161,16 @@ window.Tessera = window.Tessera || {};
   };
 
   /** Our own playlist view: cover + play button, title, scrollable track list. */
-  U.ytPlaylistHtml = (pl, list) => {
+  U.ytPlaylistHtml = (pl, list, { square = false } = {}) => {
     const cover = pl.items[0] ? `https://i.ytimg.com/vi/${encodeURIComponent(pl.items[0].v)}/hqdefault.jpg` : '';
+    // YouTube Music thumbnails hold a square album cover in the middle of a 4:3 frame: crop to it, blurred copy behind
+    const art = !cover ? '' : square
+      ? `<div class="ytpl-bg" style="background-image:url(${esc(cover)})"></div><div class="ytpl-art"><img src="${esc(cover)}" alt="" loading="lazy" onerror="this.closest('.ytpl-stage').classList.add('no-art')"></div>`
+      : `<img class="ytpl-cover" src="${esc(cover)}" alt="" loading="lazy" onerror="this.remove()">`;
     const tracks = pl.items
-      .map((it, i) => `<li data-v="${esc(it.v)}"><button type="button" data-ytplay="${i}"><span class="n">${i + 1}</span><span class="tt"><span>${esc(it.t)}</span>${it.a ? `<small class="muted">${esc(it.a)}</small>` : ''}</span></button></li>`)
+      .map((it, i) => `<li data-v="${esc(it.v)}"><button type="button" data-ytplay="${i}"><span class="n"><i>${i + 1}</i></span><span class="tt"><span>${esc(it.t)}</span>${it.a ? `<small class="muted">${esc(it.a)}</small>` : ''}</span></button></li>`)
       .join('');
-    return `<div class="ytpl-stage">${cover ? `<img class="ytpl-cover" src="${esc(cover)}" alt="" loading="lazy" onerror="this.remove()">` : ''}<div class="ytpl-player"></div>` +
+    return `<div class="ytpl-stage">${art}<div class="ytpl-player"></div>` +
       `<button type="button" class="ytpl-play" data-ytplay="all" aria-label="${esc(T.tp('play'))}">▶</button></div>` +
       `<div class="ytpl-side"><div class="ytpl-head"><strong>${esc(pl.title)}</strong>` +
       `<a class="muted" href="https://music.youtube.com/playlist?list=${encodeURIComponent(list)}" target="_blank" rel="noopener">${esc([pl.author, `${pl.items.length} ${T.tp('tracks')}`].filter(Boolean).join(' · '))} ↗</a></div>` +
@@ -282,7 +286,8 @@ window.Tessera = window.Tessera || {};
       if (list) {
         const pl = p._playlist || T.ytCache?.[list];
         const fallback = `<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(list)}" title="${esc(p.title || 'Playlist')}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>`;
-        return `<div class="w-body ytpl" data-ytpl="${esc(list)}">${pl?.items?.length ? U.ytPlaylistHtml(pl, list) : fallback}</div>`;
+        const square = /music\.youtube\.com/.test(p.url);
+        return `<div class="w-body ytpl" data-ytpl="${esc(list)}"${square ? ' data-square="1"' : ''}>${pl?.items?.length ? U.ytPlaylistHtml(pl, list, { square }) : fallback}</div>`;
       }
       const e = U.musicEmbed(p.url);
       if (e) return iframe(e, p.title || 'Music', 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');

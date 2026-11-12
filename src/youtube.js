@@ -42,7 +42,7 @@ window.Tessera = window.Tessera || {};
         if (!pl.items?.length) return;
         T.ytCache[list] = pl;
         document.querySelectorAll(`[data-ytpl="${CSS.escape(list)}"]`).forEach((box) => {
-          box.innerHTML = T.util.ytPlaylistHtml(pl, list);
+          box.innerHTML = T.util.ytPlaylistHtml(pl, list, { square: !!box.dataset.square });
         });
       } catch (e) { /* static hosting: keep the plain YouTube embed */ }
     });
