@@ -81,7 +81,7 @@ window.Tessera = window.Tessera || {};
   const PLATFORMS = [
     ['instagram.com', 'Instagram', '#E1306C', 'IG'], ['github.com', 'GitHub', '#24292F', 'GH'],
     ['gitlab.com', 'GitLab', '#FC6D26', 'GL'], ['codeberg.org', 'Codeberg', '#2185D0', 'CB'],
-    ['linkedin.com', 'LinkedIn', '#0A66C2', 'in'], ['youtube.com', 'YouTube', '#FF0000', '▶'],
+    ['linkedin.com', 'LinkedIn', '#0A66C2', 'in'], ['music.youtube.com', 'YouTube Music', '#FF0000', '♫'], ['youtube.com', 'YouTube', '#FF0000', '▶'],
     ['youtu.be', 'YouTube', '#FF0000', '▶'], ['x.com', 'X', '#000000', 'X'], ['twitter.com', 'X', '#000000', 'X'],
     ['bsky.app', 'Bluesky', '#0085FF', '🦋'], ['threads.net', 'Threads', '#000000', '@'],
     ['tiktok.com', 'TikTok', '#111111', '♪'], ['twitch.tv', 'Twitch', '#9146FF', 'TV'],
@@ -95,7 +95,7 @@ window.Tessera = window.Tessera || {};
     ['makerworld.com', 'MakerWorld', '#00AE42', 'MW'], ['thingiverse.com', 'Thingiverse', '#248BFB', 'T'],
     ['vinted', 'Vinted', '#09B1BA', 'V'], ['pixelfed', 'Pixelfed', '#6366F1', 'PF'],
     ['mastodon', 'Mastodon', '#6364FF', 'M'], ['mstdn', 'Mastodon', '#6364FF', 'M'],
-    ['peertube', 'PeerTube', '#F1680D', '▶'], ['soundcloud.com', 'SoundCloud', '#FF5500', '☁'],
+    ['peertube', 'PeerTube', '#F1680D', '▶'], ['soundcloud.com', 'SoundCloud', '#FF5500', '☁'], 
     ['bandcamp.com', 'Bandcamp', '#1DA0C3', 'bc'], ['letterboxd.com', 'Letterboxd', '#202830', '●●'],
     ['strava.com', 'Strava', '#FC4C02', 'S'], ['reddit.com', 'Reddit', '#FF4500', 'r/'],
     ['prusaprinters.org', 'Printables', '#FA6831', 'Pr'], ['chromewebstore.google.com', 'Chrome Web Store', '#1A73E8', '⬇'],
@@ -120,6 +120,9 @@ window.Tessera = window.Tessera || {};
   U.videoEmbed = (url) => {
     const u = String(url || '');
     let m;
+    // playlists (youtube.com/playlist?list=…, or a watch URL that only carries a list)
+    if (/(?:youtube\.com|youtu\.be)\//.test(u) && (m = u.match(/[?&]list=([\w-]+)/)) && !/[?&]v=/.test(u))
+      return 'https://www.youtube-nocookie.com/embed/videoseries?list=' + m[1];
     if ((m = u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/)))
       return 'https://www.youtube-nocookie.com/embed/' + m[1];
     if ((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return 'https://player.vimeo.com/video/' + m[1] + '?dnt=1';
@@ -131,6 +134,11 @@ window.Tessera = window.Tessera || {};
   U.musicEmbed = (url) => {
     const u = String(url || '');
     let m;
+    // YouTube Music: playlists/albums (list=…) and single tracks (v=…) use the YouTube player
+    if (/music\.youtube\.com\//.test(u)) {
+      if ((m = u.match(/[?&]list=([\w-]+)/)) && !/[?&]v=/.test(u)) return 'https://www.youtube-nocookie.com/embed/videoseries?list=' + m[1];
+      if ((m = u.match(/[?&]v=([\w-]{11})/))) return 'https://www.youtube-nocookie.com/embed/' + m[1];
+    }
     if ((m = u.match(/open\.spotify\.com\/(?:intl-[\w-]+\/)?(track|album|playlist|episode|show|artist)\/(\w+)/)))
       return 'https://open.spotify.com/embed/' + m[1] + '/' + m[2];
     if (/^https:\/\/music\.apple\.com\//.test(u)) return u.replace('music.apple.com', 'embed.music.apple.com');
@@ -155,7 +163,7 @@ window.Tessera = window.Tessera || {};
   const ph = (icon, txt = '') => `<div class="w-body ph"><span>${icon}</span>${txt ? `<small class="muted">${esc(txt)}</small>` : ''}</div>`;
   const h3 = (t) => (t ? `<h3>${esc(t)}</h3>` : '');
   const iframe = (src, title, allow = '') =>
-    `<div class="w-body embed"><iframe src="${esc(src)}" title="${esc(title || 'Embed')}" loading="lazy" ${allow ? `allow="${allow}"` : 'allowfullscreen'}></iframe></div>`;
+    `<div class="w-body embed"><iframe src="${esc(src)}" title="${esc(title || 'Embed')}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" ${allow ? `allow="${allow}"` : 'allowfullscreen'}></iframe></div>`;
 
   /* ---------- registry ---------- */
   const W = (T.widgets = {});
@@ -245,7 +253,7 @@ window.Tessera = window.Tessera || {};
     label: 'Music|Musique', icon: '🎧', sizes: ['2x1', '2x2', '4x1', '1x2'],
     defaults: { url: '', title: '' },
     fields: [
-      { key: 'url', label: 'URL', type: 'url', help: 'Spotify, Apple Music, SoundCloud, Deezer, Bandcamp embed — or an .mp3|Spotify, Apple Music, SoundCloud, Deezer, embed Bandcamp — ou un .mp3' },
+      { key: 'url', label: 'URL', type: 'url', help: 'Spotify, Apple Music, YouTube Music, SoundCloud, Deezer, Bandcamp embed — or an .mp3|Spotify, Apple Music, YouTube Music, SoundCloud, Deezer, embed Bandcamp — ou un .mp3' },
       { key: 'title', label: 'Title|Titre' }
     ],
     render(p) {

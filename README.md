@@ -60,8 +60,8 @@ Set `TESSERA_URL=https://you.example.com` at build time for absolute `og:url` / 
 | `text` | Title + markdown-lite (`**bold**`, `*italic*`, `[link](url)`) | 1×1 2×1 1×2 2×2 4×1 |
 | `image` | Photo with caption and optional link | all |
 | `gallery` | Swipeable carousel (CSS scroll-snap), one `url \| caption` per line | 2×2 2×1 4×2 4×1 1×2 |
-| `video` | YouTube, Vimeo, PeerTube or `.mp4` | 2×1 2×2 4×1 4×2 |
-| `music` | Spotify, Apple Music, SoundCloud, Deezer, Bandcamp embed, or an audio file | 2×1 2×2 4×1 1×2 |
+| `video` | YouTube (videos & playlists), Vimeo, PeerTube or `.mp4` | 2×1 2×2 4×1 4×2 |
+| `music` | Spotify, Apple Music, YouTube Music, SoundCloud, Deezer, Bandcamp embed, or an audio file | 2×1 2×2 4×1 1×2 |
 | `map` | Vector map (MapLibre + OpenFreeMap, no API key) with a pulsing pin. Style `theme` is generated from your page colours (Apple-Maps-ish); also `liberty`, `positron`, `bright`, or the classic `osm` iframe | 1×1 2×1 2×2 4×1 |
 | `event` | Date card, tickets button, **Add to calendar** (`.ics` generated in the browser) | 1×1 2×1 2×2 |
 | `stat` | Big number + label | 1×1 2×1 |
