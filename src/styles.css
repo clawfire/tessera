@@ -56,8 +56,9 @@ small { font-size: 0.8rem; }
 .w h3 { font-size: 1.05rem; margin-bottom: 4px; }
 .tone-accent { background: var(--accent); color: var(--on-accent); border-color: transparent; }
 .tone-dark { background: var(--dark); color: var(--on-dark); border-color: transparent; }
-.tone-ghost { background: transparent; box-shadow: none; border-color: transparent; }
-.tone-ghost .w-body { padding-left: 4px; padding-right: 4px; }
+.tone-ghost { background: transparent; box-shadow: none; border: 1.5px dashed color-mix(in srgb, var(--text) 18%, transparent); }
+.w-section.tone-ghost { border-color: transparent; }
+.w-section.tone-ghost .w-body { padding-left: 4px; padding-right: 4px; }
 .w:has(> a.w-body):hover { transform: translateY(-3px); box-shadow: 0 1px 2px rgb(0 0 0 / .05), 0 18px 40px -20px rgb(0 0 0 / .45); }
 .ph { align-items: center; justify-content: center; text-align: center; font-size: 28px; background: color-mix(in srgb, var(--text) 4%, transparent); }
 
