@@ -427,7 +427,7 @@ window.Tessera = window.Tessera || {};
   });
 
   def('contact', {
-    label: 'Contact form|Formulaire de contact', icon: '✉️', sizes: ['2x2', '1x2'],
+    label: 'Contact form|Formulaire de contact', icon: '✉️', sizes: ['2x2', '2x1'], // 1x2 is too narrow for a form
     defaults: { title: 'Get in touch', email: 'hello@example.com', topics: 'Project, Collab, Press, Just saying hi', note: '' },
     fields: [
       { key: 'title', label: 'Title|Titre' },

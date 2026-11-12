@@ -235,6 +235,15 @@ small { font-size: 0.8rem; }
 .inline-form input { flex: 1; }
 .contact form { display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 0; }
 .contact .btn { align-self: flex-start; }
+/* 2×1: topic + send on one line, message below; the note doesn't fit */
+.r2 .contact { gap: 8px; padding-top: 16px; padding-bottom: 16px; }
+.r2 .contact h3 { margin: 0; }
+.r2 .contact form { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto minmax(0, 1fr); gap: 8px; }
+.r2 .contact select { grid-column: 1; grid-row: 1; }
+.r2 .contact .btn { grid-column: 2; grid-row: 1; align-self: stretch; }
+.r2 .contact textarea { grid-column: 1 / -1; grid-row: 2; min-height: 0; height: 100%; }
+.r2 .contact form:not(:has(select)) .btn { grid-column: 1 / -1; justify-self: end; grid-row: 3; }
+.r2 .contact > small { display: none; }
 
 .section { justify-content: flex-end; padding-bottom: 6px; }
 .section h2 { font-size: 1.3rem; }
