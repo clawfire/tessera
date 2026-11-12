@@ -173,12 +173,12 @@ window.Tessera = window.Tessera || {};
     ],
     render(p, ctx) {
       const pf = U.platform(p.url);
-      const img = p.image && ctx.r >= 4 ? `<img class="link-img" src="${esc(img(p.image))}" alt="" loading="lazy">` : '';
+      const preview = p.image && ctx.r >= 4 ? `<img class="link-img" src="${esc(img(p.image))}" alt="" loading="lazy">` : '';
       return a(
         p.url,
         `<span class="badge${U.isEmoji(p.icon || pf.glyph) ? ' emoji' : ''}" style="--b:${esc(pf.color)}">${esc(p.icon || pf.glyph)}</span>` +
           `<span class="link-txt"><strong>${esc(p.title || pf.name)}</strong>${p.subtitle ? `<span class="muted">${esc(p.subtitle).replace(/(\S)@/g, '$1<wbr>@').replace(/(\S)\//g, '$1<wbr>/')}</span>` : ''}</span>` +
-          img + `<span class="arrow" aria-hidden="true">↗</span>`,
+          preview + `<span class="arrow" aria-hidden="true">↗</span>`,
         'w-body link'
       );
     }
