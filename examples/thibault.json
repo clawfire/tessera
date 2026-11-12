@@ -29,7 +29,7 @@
     {
       "id": "hello",
       "type": "text",
-      "size": "2x1",
+      "size": "2x2",
       "props": {
         "title": "Hi, I’m Thibault 👋",
         "body": "This is my corner of the web: the things I print, the tools I build, and the rituals that keep me going. **Self-hosted, open source, no algorithm.**"
@@ -69,17 +69,37 @@
       "type": "link",
       "size": "1x1",
       "props": {
-        "url": "https://www.printables.com/@clawfire",
+        "url": "https://www.prusaprinters.org/social/163072-clawfire/prints",
         "subtitle": "My 3D models"
       }
     },
     {
-      "id": "bsky",
+      "id": "masto",
       "type": "link",
       "size": "1x1",
       "props": {
-        "url": "https://bsky.app/profile/clawfire.net",
-        "subtitle": "Say hi"
+        "url": "https://m.thibau.lt/@clawfire",
+        "title": "Mastodon",
+        "subtitle": "@clawfire@m.thibau.lt",
+        "icon": "🐘"
+      }
+    },
+    {
+      "id": "yt",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.youtube.com/channel/UCW_kQcijPR7HZ02RFP4XxSA",
+        "subtitle": "Videos"
+      }
+    },
+    {
+      "id": "tg",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://t.me/clawfire",
+        "subtitle": "@clawfire"
       }
     },
     {
@@ -121,6 +141,28 @@
         "title": "Tessera",
         "subtitle": "This very page — open source, self-hosted",
         "icon": "🧩"
+      }
+    },
+    {
+      "id": "immotop",
+      "type": "link",
+      "size": "2x1",
+      "tone": "accent",
+      "props": {
+        "url": "https://chromewebstore.google.com/detail/immotop-companion/cplnfklcljjhphjjjmmhmkfclcmemfkb",
+        "title": "Immotop Companion",
+        "subtitle": "Chrome extension for immotop.lu — get it on the Chrome Web Store",
+        "icon": "🏠"
+      }
+    },
+    {
+      "id": "immotop-gh",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://github.com/clawfire/immotop-companion",
+        "title": "Immotop Companion",
+        "subtitle": "Source code"
       }
     },
     {
@@ -177,9 +219,46 @@
       }
     },
     {
+      "id": "s-shop",
+      "type": "section",
+      "size": "section",
+      "props": {
+        "title": "Shop, wishlist & deals"
+      }
+    },
+    {
+      "id": "vinted",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.vinted.lu/member/24650969-clawfire",
+        "subtitle": "Things I sell"
+      }
+    },
+    {
+      "id": "wishlist",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.amazon.de/hz/wishlist/ls/359TBDAUJHIDG",
+        "title": "Wishlist",
+        "subtitle": "Amazon",
+        "icon": "🎁"
+      }
+    },
+    {
+      "id": "deals",
+      "type": "list",
+      "size": "2x2",
+      "props": {
+        "title": "Deals I share",
+        "items": "Neverless | Earn 12.78%/year with Strategies™ | referral | https://neverless.com/referral\nPaperwallet | $10 cashback | referral | https://lnk.rise-ai.com/bLvoectXBAL8F9E\nLedger | $10 cashback on a hardware wallet | referral | https://shop.ledger.com/fr\nStandard Resume | $10 off PRO | referral | https://standardresume.co/friends/V7KCSkHp"
+      }
+    },
+    {
       "id": "map",
       "type": "map",
-      "size": "4x1",
+      "size": "2x1",
       "props": {
         "label": "Home base · Luxembourg",
         "lat": 49.6116,

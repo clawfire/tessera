@@ -23,7 +23,7 @@ const INLINE_ASSETS = args.has('--inline-assets');
 const pagePath = resolve(process.env.TESSERA_PAGE || join(root, 'page.json'));
 const siteUrl = (process.env.TESSERA_URL || '').replace(/\/$/, '');
 const out = join(root, 'dist');
-const SCRIPTS = ['i18n.js', 'widgets.js', 'render.js', 'editor.js', 'app.js'];
+const SCRIPTS = ['i18n.js', 'widgets.js', 'render.js', 'maps.js', 'editor.js', 'app.js'];
 const MIME = { '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif' };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

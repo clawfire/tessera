@@ -121,7 +121,9 @@ window.Tessera = window.Tessera || {};
     T.loadFonts(s.theme);
     const tc = document.querySelector('meta[name="theme-color"]');
     if (tc) tc.setAttribute('content', Object.assign({}, T.DEFAULT_THEME, s.theme).bg);
+    T.unmountMaps?.();
     document.getElementById('app').innerHTML = T.pageHtml(data, opts);
+    T.mountMaps?.(data);
     T.tick();
   };
 

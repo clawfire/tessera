@@ -92,7 +92,10 @@ window.Tessera = window.Tessera || {};
     ['mastodon', 'Mastodon', '#6364FF', 'M'], ['mstdn', 'Mastodon', '#6364FF', 'M'],
     ['peertube', 'PeerTube', '#F1680D', '▶'], ['soundcloud.com', 'SoundCloud', '#FF5500', '☁'],
     ['bandcamp.com', 'Bandcamp', '#1DA0C3', 'bc'], ['letterboxd.com', 'Letterboxd', '#202830', '●●'],
-    ['strava.com', 'Strava', '#FC4C02', 'S'], ['reddit.com', 'Reddit', '#FF4500', 'r/']
+    ['strava.com', 'Strava', '#FC4C02', 'S'], ['reddit.com', 'Reddit', '#FF4500', 'r/'],
+    ['prusaprinters.org', 'Printables', '#FA6831', 'Pr'], ['chromewebstore.google.com', 'Chrome Web Store', '#1A73E8', '⬇'],
+    ['chrome.google.com', 'Chrome Web Store', '#1A73E8', '⬇'], ['addons.mozilla.org', 'Firefox Add-ons', '#FF7139', '⬇'],
+    ['amazon.', 'Amazon', '#FF9900', 'a'], ['ko-fi', 'Ko-fi', '#FF5E5B', '☕'], ['liberapay.com', 'Liberapay', '#F6C915', 'Lp']
   ];
 
   /** Guess the platform from a URL to pick a name, colour and glyph. */
@@ -249,9 +252,17 @@ window.Tessera = window.Tessera || {};
 
   def('map', {
     label: 'Map|Carte', icon: '🗺️', sizes: ['2x1', '1x1', '2x2', '4x1'],
-    defaults: { label: 'Luxembourg', lat: 49.6116, lon: 6.1319, zoom: 12 },
+    defaults: { label: 'Luxembourg', lat: 49.6116, lon: 6.1319, zoom: 12, style: 'theme' },
     fields: [
       { key: 'label', label: 'Label|Libellé' },
+      {
+        key: 'style', label: 'Map style|Style de carte', type: 'select',
+        options: [
+          ['theme', 'Page colours (Apple-like)|Couleurs de la page (façon Plans)'],
+          ['liberty', 'OpenFreeMap Liberty'], ['positron', 'OpenFreeMap Positron'], ['bright', 'OpenFreeMap Bright'],
+          ['osm', 'OpenStreetMap classic (iframe)|OpenStreetMap classique (iframe)']
+        ]
+      },
       { key: 'lat', label: 'Latitude', type: 'number', step: 'any' },
       { key: 'lon', label: 'Longitude', type: 'number', step: 'any' },
       { key: 'zoom', label: 'Zoom (2–18)', type: 'number', min: 2, max: 18 }
@@ -262,7 +273,12 @@ window.Tessera = window.Tessera || {};
       const bbox = [lon - dx, lat - dy, lon + dx, lat + dy].map((n) => n.toFixed(5)).join(',');
       const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}`;
       const link = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=${z}/${lat}/${lon}`;
-      return `<div class="w-body map"><iframe src="${esc(src)}" title="${esc(p.label || 'Map')}" loading="lazy"></iframe>${p.label ? `<a class="cap" href="${esc(link)}" target="_blank" rel="noopener">📍 ${esc(p.label)}</a>` : ''}</div>`;
+      const cap = p.label ? `<a class="cap" href="${esc(link)}" target="_blank" rel="noopener">📍 ${esc(p.label)}</a>` : '';
+      const style = p.style || 'theme';
+      if (style === 'osm') return `<div class="w-body map"><iframe src="${esc(src)}" title="${esc(p.label || 'Map')}" loading="lazy"></iframe>${cap}</div>`;
+      // vector map, mounted client-side by maps.js (falls back to the iframe if MapLibre can't run)
+      const opts = JSON.stringify({ lat, lon, zoom: z, style });
+      return `<div class="w-body map"><div class="mapgl" role="img" aria-label="${esc(p.label || 'Map')}" data-map="${esc(opts)}" data-fallback="${esc(src)}"></div>${cap}</div>`;
     }
   });
 

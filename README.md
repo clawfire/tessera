@@ -54,7 +54,7 @@ Set `TESSERA_URL=https://you.example.com` at build time for absolute `og:url` / 
 | `gallery` | Swipeable carousel (CSS scroll-snap), one `url \| caption` per line | 2×2 2×1 4×2 4×1 1×2 |
 | `video` | YouTube, Vimeo, PeerTube or `.mp4` | 2×1 2×2 4×1 4×2 |
 | `music` | Spotify, Apple Music, SoundCloud, Deezer, Bandcamp embed, or an audio file | 2×1 2×2 4×1 1×2 |
-| `map` | OpenStreetMap embed with a label | 1×1 2×1 2×2 4×1 |
+| `map` | Vector map (MapLibre + OpenFreeMap, no API key) with a pulsing pin. Style `theme` is generated from your page colours (Apple-Maps-ish); also `liberty`, `positron`, `bright`, or the classic `osm` iframe | 1×1 2×1 2×2 4×1 |
 | `event` | Date card, tickets button, **Add to calendar** (`.ics` generated in the browser) | 1×1 2×1 2×2 |
 | `stat` | Big number + label | 1×1 2×1 |
 | `countdown` | Live countdown to a date | 1×1 2×1 |
@@ -102,6 +102,14 @@ Clawfire is a palette of Spring Wood `#F8F5F1`, Almond `#E8DDCB`, Tan `#CDB37F`,
 ```json
 "theme": { "bg": "#F8F5F1", "card": "#FFFFFF", "text": "#031734", "accent": "#066464", "dark": "#043649",
            "radius": 20, "font": "inter", "display": "dosis", "fontCss": "assets/fonts/clawfire.css" }
+```
+
+### Maps
+
+MapLibre GL is vendored in `assets/vendor/maplibre/` and only loaded on pages that have a map (it falls back to the OSM iframe if WebGL is unavailable). Tiles come from [OpenFreeMap](https://openfreemap.org). Point to your own tile server with:
+
+```json
+"settings": { "map": { "tiles": "https://tiles.example.com/planet", "glyphs": "https://tiles.example.com/fonts/{fontstack}/{range}.pbf" } }
 ```
 
 ## Writing a widget
