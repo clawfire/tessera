@@ -30,7 +30,8 @@ window.Tessera = window.Tessera || {};
     if (!u) return '';
     const m = u.match(/^([a-z][\w+.-]*):/i);
     if (!m) return u;
-    return /^(https?|mailto|tel)$/i.test(m[1]) || /^data:image\//i.test(u) ? u : '';
+    // blob: URLs are same-origin only (used to preview images that aren't published yet)
+    return /^(https?|mailto|tel|blob)$/i.test(m[1]) || /^data:image\//i.test(u) ? u : '';
   });
 
   /** Markdown-lite: **bold**, *italic*, [link](url), line breaks. Escapes first. */
@@ -43,6 +44,10 @@ window.Tessera = window.Tessera || {};
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
       .replace(/\n/g, '<br>');
+
+  /** Pending (not yet published) uploads are shown from memory. */
+  U.asset = (u) => (T.assetOverrides && T.assetOverrides[u]) || u;
+  const img = (u) => safeUrl(U.asset(u));
 
   /** "a | b | c" lines → [['a','b','c'], ...] */
   U.lines = (s) =>
@@ -164,11 +169,11 @@ window.Tessera = window.Tessera || {};
       { key: 'title', label: 'Title|Titre', placeholder: 'Auto' },
       { key: 'subtitle', label: 'Subtitle|Sous-titre', placeholder: '@handle · 12K' },
       { key: 'icon', label: 'Icon (emoji or short text)|Icône (emoji ou texte court)', placeholder: 'Auto' },
-      { key: 'image', label: 'Preview image (tall sizes)|Image d’aperçu (grandes tailles)', type: 'url' }
+      { key: 'image', label: 'Preview image (tall sizes)|Image d’aperçu (grandes tailles)', type: 'url', image: true }
     ],
     render(p, ctx) {
       const pf = U.platform(p.url);
-      const img = p.image && ctx.r >= 4 ? `<img class="link-img" src="${esc(safeUrl(p.image))}" alt="" loading="lazy">` : '';
+      const img = p.image && ctx.r >= 4 ? `<img class="link-img" src="${esc(img(p.image))}" alt="" loading="lazy">` : '';
       return a(
         p.url,
         `<span class="badge${U.isEmoji(p.icon || pf.glyph) ? ' emoji' : ''}" style="--b:${esc(pf.color)}">${esc(p.icon || pf.glyph)}</span>` +
@@ -193,14 +198,14 @@ window.Tessera = window.Tessera || {};
     label: 'Image', icon: '🖼️', sizes: ['2x2', '1x1', '2x1', '1x2', '4x1', '4x2'],
     defaults: { src: '', alt: '', caption: '', url: '' },
     fields: [
-      { key: 'src', label: 'Image URL|URL de l’image', type: 'url', help: 'Tip: put files in /assets and use assets/photo.jpg|Astuce : dépose tes fichiers dans /assets et utilise assets/photo.jpg' },
+      { key: 'src', label: 'Image', type: 'url', image: true, help: 'Drop a photo here or on the card, or paste a URL|Dépose une photo ici ou sur la carte, ou colle une URL' },
       { key: 'alt', label: 'Alt text|Texte alternatif' },
       { key: 'caption', label: 'Caption|Légende' },
       { key: 'url', label: 'Link (optional)|Lien (optionnel)', type: 'url' }
     ],
     render(p) {
       if (!p.src) return ph('🖼️');
-      const inner = `<img src="${esc(safeUrl(p.src))}" alt="${esc(p.alt)}" loading="lazy">${p.caption ? `<span class="cap">${esc(p.caption)}</span>` : ''}`;
+      const inner = `<img src="${esc(img(p.src))}" alt="${esc(p.alt)}" loading="lazy">${p.caption ? `<span class="cap">${esc(p.caption)}</span>` : ''}`;
       return p.url ? a(p.url, inner, 'w-body media') : `<div class="w-body media">${inner}</div>`;
     }
   });
@@ -208,12 +213,12 @@ window.Tessera = window.Tessera || {};
   def('gallery', {
     label: 'Gallery|Galerie', icon: '🎞️', sizes: ['2x2', '2x1', '4x2', '4x1', '1x2'],
     defaults: { items: '' },
-    fields: [{ key: 'items', label: 'Images (one per line)|Images (une par ligne)', type: 'textarea', rows: 6, help: 'image-url | caption||url-image | légende' }],
+    fields: [{ key: 'items', label: 'Images (one per line)|Images (une par ligne)', type: 'textarea', rows: 6, images: true, help: 'image-url | caption — or drop photos on the card||url-image | légende — ou dépose des photos sur la carte' }],
     render(p) {
       const items = U.lines(p.items);
       if (!items.length) return ph('🎞️');
       const slides = items
-        .map(([src, cap], i) => `<figure><img src="${esc(safeUrl(src))}" alt="${esc(cap || '')}" loading="lazy">${cap ? `<figcaption class="cap">${esc(cap)}</figcaption>` : ''}<span class="count">${i + 1}/${items.length}</span></figure>`)
+        .map(([src, cap], i) => `<figure><img src="${esc(img(src))}" alt="${esc(cap || '')}" loading="lazy">${cap ? `<figcaption class="cap">${esc(cap)}</figcaption>` : ''}<span class="count">${i + 1}/${items.length}</span></figure>`)
         .join('');
       return `<div class="w-body gallery"><div class="track" tabindex="0">${slides}</div></div>`;
     }

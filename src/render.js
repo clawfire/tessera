@@ -58,7 +58,7 @@ window.Tessera = window.Tessera || {};
   function profileHtml(p = {}) {
     const initials = String(p.name || '?').split(/\s+/).map((s) => s[0]).slice(0, 2).join('').toUpperCase();
     const avatar = p.avatar
-      ? `<img class="avatar" src="${esc(safeUrl(p.avatar))}" alt="${esc(p.name)}">`
+      ? `<img class="avatar" src="${esc(safeUrl(T.util.asset(p.avatar)))}" alt="${esc(p.name)}">`
       : `<div class="avatar avatar-ph" aria-hidden="true">${esc(initials)}</div>`;
     return `<header class="profile">${avatar}
       <h1>${esc(p.name || 'Your name')}</h1>

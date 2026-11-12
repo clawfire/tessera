@@ -35,6 +35,14 @@ npm run build:single  # one HTML file, local assets inlined as data URIs
 
 Set `TESSERA_URL=https://you.example.com` at build time for absolute `og:url` / `og:image`.
 
+## Photos & publishing from the editor
+
+- **Local** (`npm run dev`): pick or drop photos in the editor; they're resized in the browser (WebP, 2000 px max — 512 px for the avatar) and written to `assets/uploads/`. **Save** writes your page JSON to disk. Commit with git as usual.
+- **Hosted** (the editor on your live site, `/#edit`): photos wait in the browser (IndexedDB) until you click **Publish**, which makes one commit with the page JSON and the photos through the GitHub or Gitea/Forgejo/Codeberg API. CI then redeploys.
+  - Use a fine-grained token limited to that one repository with *Contents: read & write*. It's kept in this browser only (session by default) and never written to `page.json`.
+  - Gitea/Forgejo need CORS enabled for your site's origin (`[cors] ENABLED = true`).
+- Drop photos on an image card to replace it, on a gallery to extend it, or anywhere else to create a new image card.
+
 ## Deploy
 
 | Host | How |
@@ -149,7 +157,7 @@ scripts/
 
 ## Roadmap
 
-- [ ] Publish from the editor (commit `page.json` via the GitHub/Gitea/Forgejo API with a personal token)
+- [x] Publish from the editor (GitHub, Gitea/Forgejo) with image uploads
 - [ ] Touch drag & drop (today: Up/Down buttons on mobile)
 - [ ] QR code widget, RSS "latest posts" widget (resolved at build time)
 - [ ] More languages (`de`, `lb`, `es`…) — PRs welcome

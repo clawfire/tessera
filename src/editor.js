@@ -58,6 +58,12 @@ window.Tessera = window.Tessera || {};
     bind(ac.signal);
     paint();
     toast(draft ? te('draftRestored') : te('editHint'));
+    // local (dev server) or hosted (publish through the git API)?
+    Promise.all([T.assets.detect(), T.assets.restore()]).then(() => {
+      if (!S) return;
+      $('#tessera-chrome').dataset.mode = T.assets.mode;
+      paint();
+    });
   };
 
   ed.stop = () => {
@@ -116,12 +122,15 @@ window.Tessera = window.Tessera || {};
         <button type="button" data-tb="add" class="primary">＋ ${te('add')}</button>
         <button type="button" data-tb="settings">🎨 <span class="lbl">${te('settings')}</span></button>
         <span class="sep"></span>
+        <button type="button" data-tb="save" class="only-local">💾 <span class="lbl">${te('save')}</span></button>
+        <button type="button" data-tb="publish" class="only-hosted">🚀 <span class="lbl">${te('publishNow')}</span></button>
         <button type="button" data-tb="export" title="${te('export')}">⬇ <span class="lbl">${te('export')}</span></button>
         <button type="button" data-tb="import" title="${te('import')}">⬆ <span class="lbl">${te('import')}</span></button>
         <button type="button" data-tb="reset" title="${te('reset')}">↺</button>
         <span class="sep"></span>
         <button type="button" data-tb="exit">✓ ${te('done')}</button>
         <input type="file" accept="application/json,.json" hidden id="tessera-file">
+        <input type="file" accept="image/*" hidden id="tessera-img">
       </div>
       <aside class="panel" hidden aria-label="Inspector">
         <header><h2></h2><button type="button" data-tb="close" aria-label="Close">✕</button></header>
@@ -163,6 +172,10 @@ window.Tessera = window.Tessera || {};
       const attrs = ['step', 'min', 'max'].filter((x) => f[x] != null).map((x) => `${x}="${f[x]}"`).join(' ');
       input = `<input type="${f.type || 'text'}" ${k} value="${esc(v)}" placeholder="${esc(f.placeholder || '')}" ${attrs}>`;
     }
+    if (f.image || f.images) {
+      const target = `data-pick="${scope}:${esc(f.key)}"${f.images ? ' data-multi="1"' : ''}${f.max ? ` data-max="${f.max}"` : ''}`;
+      input = `<span class="img-field" ${target}>${input}<button type="button" class="pick" ${target}>📁 ${esc(f.images ? te('addImages') : te('pick'))}</button></span>`;
+    }
     return `<label class="fld"><span>${esc(L(f.label))}</span>${input}${f.help ? `<small>${esc(L(f.help))}</small>` : ''}</label>`;
   }
 
@@ -196,6 +209,7 @@ window.Tessera = window.Tessera || {};
     S.selected = null;
     paint();
     const s = S.data.settings;
+    const pub = (s.publish ||= {});
     const panel = $('#tessera-chrome .panel');
     panel.hidden = false;
     document.body.classList.add('panel-open');
@@ -204,7 +218,7 @@ window.Tessera = window.Tessera || {};
     const yesNo = [['true', te('yes')], ['false', te('no')]];
     $('.panel-body', panel).innerHTML = `
       <h3>${te('profile')}</h3>
-      ${field({ key: 'avatar', label: 'Avatar (URL)', type: 'url' }, s.profile.avatar, 'pr')}
+      ${field({ key: 'avatar', label: 'Avatar', type: 'url', image: true, max: 512 }, s.profile.avatar, 'pr')}
       ${field({ key: 'name', label: 'Name|Nom' }, s.profile.name, 'pr')}
       ${field({ key: 'tagline', label: 'Tagline|Accroche' }, s.profile.tagline, 'pr')}
       ${field({ key: 'location', label: 'Location|Localisation' }, s.profile.location, 'pr')}
@@ -230,12 +244,30 @@ window.Tessera = window.Tessera || {};
         ${field({ key: 'showEditButton', label: 'Public edit button|Bouton d’édition public', type: 'select', options: yesNo, bool: true }, String(!!s.showEditButton), 's')}
       </div>
       ${field({ key: 'footer', label: 'Footer|Pied de page', type: 'textarea', rows: 2 }, s.footer, 's')}
-      <h3>${te('publish')}</h3>
+      <h3 id="tessera-publish">${te('publish')}</h3>
+      ${T.assets.mode === 'local'
+        ? `<p class="hint">${esc(te('localMode'))}</p>
+      <div class="panel-actions"><button type="button" data-tb="save" class="primary-btn">💾 ${te('save')} → ${esc(T.assets.localPage || 'page.json')}</button></div>`
+        : `${field({ key: 'provider', label: te('provider'), type: 'select', options: [['github', 'GitHub'], ['gitea', 'Gitea / Forgejo / Codeberg']] }, pub.provider || 'github', 'pub')}
+      ${pub.provider === 'gitea' ? field({ key: 'api', label: te('apiUrl'), type: 'url', placeholder: 'https://codeberg.org/api/v1' }, pub.api, 'pub') : ''}
+      <div class="row2">
+        ${field({ key: 'repo', label: te('repo'), placeholder: 'clawfire/my-page' }, pub.repo, 'pub')}
+        ${field({ key: 'branch', label: te('branch'), placeholder: 'main' }, pub.branch || 'main', 'pub')}
+      </div>
+      ${field({ key: 'path', label: te('pagePath'), placeholder: 'page.json' }, pub.path || 'page.json', 'pub')}
+      ${field({ key: 'token', label: te('token'), type: 'password', help: te('tokenHelp') }, T.publish.getToken(), 'tok')}
+      ${field({ key: 'remember', label: te('remember'), type: 'select', options: yesNo, bool: true }, String(T.publish.remembered()), 'tok')}
+      <p class="hint" data-pending></p>
+      <div class="panel-actions"><button type="button" data-tb="publish" class="primary-btn">🚀 ${te('publishNow')}</button></div>`}
       <p class="hint">${esc(te('hint'))}</p>
       <div class="panel-actions">
         <button type="button" data-tb="export">⬇ ${te('export')} page.json</button>
         <button type="button" data-tb="copy">⧉ ${te('copy')}</button>
       </div>`;
+    T.assets.pendingFor(S.data).then((p) => {
+      const el = $('#tessera-chrome [data-pending]');
+      if (el) el.textContent = p.length ? `${p.length} ${te('pendingImgs')}` : '';
+    });
   }
 
   function refreshPanel() {
@@ -361,9 +393,72 @@ window.Tessera = window.Tessera || {};
         btn.textContent = '↺';
         return toast(te('resetDone'));
       }
+      case 'save':
+        return T.assets.saveLocal(S.data).then(
+          (path) => { T.published = clone(S.data); store.clear(); toast(`✓ ${te('saved')} ${path}`); },
+          (e) => toast(`${te('saveError')}: ${e.message}`)
+        );
+      case 'publish': {
+        if (!T.publish.ready(S.data.settings.publish)) {
+          toast(te('publishSetup'));
+          openSettings();
+          return $('#tessera-publish')?.scrollIntoView({ behavior: 'smooth' });
+        }
+        if (btn.disabled) return;
+        btn.disabled = true;
+        toast(te('publishing'));
+        return T.publish.run(S.data).then(
+          ({ url }) => { T.published = clone(S.data); store.clear(); toast(`🚀 ${te('publishedOk')}${url ? ' — ' + url.replace(/^https?:\/\//, '') : ''}`); refreshPanel(); },
+          (e) => toast(`${te('publishError')}: ${e.message}`)
+        ).finally(() => (btn.disabled = false));
+      }
       case 'exit':
         return exit();
     }
+  }
+
+  /* ---------- images ---------- */
+  /** Process files, then hand each resulting path to `apply`. */
+  async function addImages(files, apply, max) {
+    const list = [...files].filter((f) => /^image\//.test(f.type));
+    if (!list.length) return;
+    toast(te('uploading'));
+    try {
+      const results = [];
+      for (const f of list) results.push(await T.assets.add(f, { max: max || 2000 }));
+      snapshot();
+      results.forEach((r) => apply(r.path));
+      commit();
+      refreshPanel();
+      const kb = Math.round(results.reduce((n, r) => n + r.size, 0) / 1024);
+      toast(`✓ ${te('added')}${results.length > 1 ? ` ×${results.length}` : ''} · ${kb} KB`);
+    } catch (e) {
+      toast('⚠︎ ' + e.message);
+    }
+  }
+
+  /** Where a picked/dropped image goes: "scope:key" of the open panel. */
+  function imageTarget(spec, multi) {
+    const [scope, key] = spec.split(':');
+    const s = S.data.settings;
+    const obj = scope === 'pr' ? s.profile : scope === 'p' ? find(S.selected)?.props : null;
+    if (!obj) return null;
+    return (path) => {
+      if (multi) obj[key] = [String(obj[key] || '').trim(), `${path} | `].filter(Boolean).join('\n');
+      else obj[key] = path;
+    };
+  }
+
+  /** Dropping photos on the grid: fill an image card, extend a gallery, or create a new image card. */
+  function dropOnCard(files, cardEl) {
+    const w = cardEl && find(cardEl.dataset.id);
+    if (w?.type === 'image') return addImages(files, (path) => (w.props.src = path));
+    if (w?.type === 'gallery') return addImages(files, (path) => (w.props.items = [String(w.props.items || '').trim(), `${path} | `].filter(Boolean).join('\n')));
+    let at = w ? indexOf(w.id) + 1 : S.data.widgets.length;
+    return addImages(files, (path) => {
+      const nw = { id: uid(), type: 'image', size: '2x2', props: { src: path, alt: '', caption: '', url: '' } };
+      S.data.widgets.splice(at++, 0, nw);
+    });
   }
 
   /* ---------- events ---------- */
@@ -371,6 +466,14 @@ window.Tessera = window.Tessera || {};
     const t = e.target;
     const tb = t.closest('[data-tb]');
     if (tb) return toolbar(tb.dataset.tb, tb);
+    const pick = t.closest('button.pick');
+    if (pick) {
+      e.preventDefault();
+      S.pick = { spec: pick.dataset.pick, multi: !!pick.dataset.multi, max: +pick.dataset.max || 0 };
+      const input = $('#tessera-img');
+      input.multiple = S.pick.multi;
+      return input.click();
+    }
     const add = t.closest('[data-add]');
     if (add) return addWidget(add.dataset.add);
     const preset = t.closest('[data-preset]');
@@ -405,6 +508,17 @@ window.Tessera = window.Tessera || {};
     if (pair) pair.querySelectorAll('input').forEach((i) => i !== el && /^#[0-9a-f]{6}$/i.test(v) && (i.value = v));
 
     const s = S.data.settings;
+    if (scope === 'tok') {
+      const tokenEl = $('#tessera-chrome [data-scope="tok"][data-key="token"]');
+      const rememberEl = $('#tessera-chrome [data-scope="tok"][data-key="remember"]');
+      return T.publish.setToken(tokenEl?.value.trim(), rememberEl?.value === 'true');
+    }
+    if (scope === 'pub') {
+      (s.publish ||= {})[key] = v;
+      store.set(S.data);
+      if (key === 'provider') openSettings();
+      return;
+    }
     let target;
     if (scope === 'w' || scope === 'p') {
       const w = find(S.selected);
@@ -443,7 +557,15 @@ window.Tessera = window.Tessera || {};
     const on = (type, fn, target = document) => target.addEventListener(type, fn, { signal });
     on('click', onClick);
     on('input', onInput);
-    on('change', (e) => e.target.id === 'tessera-file' && onFile(e));
+    on('change', (e) => {
+      if (e.target.id === 'tessera-file') return onFile(e);
+      if (e.target.id === 'tessera-img' && S.pick) {
+        const files = [...e.target.files];
+        e.target.value = '';
+        const apply = imageTarget(S.pick.spec, S.pick.multi);
+        if (apply) addImages(files, apply, S.pick.max);
+      }
+    });
 
     on('dragstart', (e) => {
       const w = e.target.closest?.('#app .w[data-id]');
@@ -453,7 +575,15 @@ window.Tessera = window.Tessera || {};
       e.dataTransfer.effectAllowed = 'move';
       try { e.dataTransfer.setData('text/plain', S.dragId); } catch (_) { /* old Safari */ }
     });
+    const hasFiles = (e) => [...(e.dataTransfer?.types || [])].includes('Files');
     on('dragover', (e) => {
+      if (hasFiles(e)) {
+        e.preventDefault(); // allow dropping photos (and keep the browser from opening them)
+        document.querySelectorAll('#tessera-chrome .img-field.over, #app .w.file-over').forEach((n) => n.classList.remove('over', 'file-over'));
+        e.target.closest?.('#tessera-chrome .img-field')?.classList.add('over');
+        e.target.closest?.('#app .w[data-id]')?.classList.add('file-over');
+        return;
+      }
       if (!S.dragId) return;
       const w = e.target.closest?.('#app .w[data-id]');
       e.preventDefault();
@@ -467,6 +597,17 @@ window.Tessera = window.Tessera || {};
       S.drop = { id: w.dataset.id, before };
     });
     on('drop', (e) => {
+      if (hasFiles(e)) {
+        e.preventDefault();
+        document.querySelectorAll('.img-field.over, .w.file-over').forEach((n) => n.classList.remove('over', 'file-over'));
+        const fieldEl = e.target.closest?.('#tessera-chrome .img-field');
+        if (fieldEl) {
+          const apply = imageTarget(fieldEl.dataset.pick, !!fieldEl.dataset.multi);
+          return apply && addImages(e.dataTransfer.files, apply, +fieldEl.dataset.max || 0);
+        }
+        if (e.target.closest?.('#app')) return dropOnCard(e.dataTransfer.files, e.target.closest('.w[data-id]'));
+        return;
+      }
       if (!S.dragId) return;
       e.preventDefault();
       const { dragId, drop } = S;

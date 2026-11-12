@@ -32,7 +32,13 @@ window.Tessera = window.Tessera || {};
       resetDone: 'Back to the published version', undone: 'Undone', deleted: 'Deleted — ⌘/Ctrl+Z to undo',
       profile: 'Profile', theme: 'Theme', page: 'Page', publish: 'Publish', copy: 'Copy JSON',
       hint: 'Edits are saved in this browser only. Export page.json, commit it to your repo, and your CI rebuilds the site.',
-      editHint: 'Drag cards to reorder · click to edit', yes: 'Yes', no: 'No'
+      editHint: 'Drag cards to reorder · click to edit · drop photos anywhere', yes: 'Yes', no: 'No',
+      save: 'Save', saved: 'Saved to', saveError: 'Save failed', publishNow: 'Publish', publishing: 'Publishing…',
+      publishedOk: 'Published', publishError: 'Publish failed', pick: 'Choose', addImages: 'Add images',
+      uploading: 'Processing image…', added: 'Image added', localMode: 'Local mode: Save writes your page and photos straight into the project folder. Commit them with git.',
+      provider: 'Provider', apiUrl: 'API URL', repo: 'Repository (owner/name)', branch: 'Branch', pagePath: 'Page file in the repo',
+      token: 'Access token', tokenHelp: 'Fine-grained token for this repo only, “Contents: read & write”. Kept in this browser, never in page.json.',
+      remember: 'Remember token on this device', pendingImgs: 'images waiting to be published', publishSetup: 'Set up publishing first'
     },
     fr: {
       add: 'Ajouter', settings: 'Profil & thème', export: 'Exporter', import: 'Importer', reset: 'Réinitialiser',
@@ -44,7 +50,13 @@ window.Tessera = window.Tessera || {};
       resetDone: 'Retour à la version publiée', undone: 'Annulé', deleted: 'Supprimé — ⌘/Ctrl+Z pour annuler',
       profile: 'Profil', theme: 'Thème', page: 'Page', publish: 'Publier', copy: 'Copier le JSON',
       hint: 'Les modifications sont gardées dans ce navigateur. Exporte page.json, commite-le dans ton repo, et la CI reconstruit le site.',
-      editHint: 'Glisse les cartes pour réordonner · clique pour éditer', yes: 'Oui', no: 'Non'
+      editHint: 'Glisse les cartes pour réordonner · clique pour éditer · dépose des photos n’importe où', yes: 'Oui', no: 'Non',
+      save: 'Enregistrer', saved: 'Enregistré dans', saveError: 'Échec de l’enregistrement', publishNow: 'Publier', publishing: 'Publication…',
+      publishedOk: 'Publié', publishError: 'Échec de la publication', pick: 'Choisir', addImages: 'Ajouter des images',
+      uploading: 'Traitement de l’image…', added: 'Image ajoutée', localMode: 'Mode local : Enregistrer écrit ta page et tes photos directement dans le dossier du projet. Commite-les avec git.',
+      provider: 'Fournisseur', apiUrl: 'URL de l’API', repo: 'Dépôt (owner/nom)', branch: 'Branche', pagePath: 'Fichier de la page dans le dépôt',
+      token: 'Jeton d’accès', tokenHelp: 'Jeton à portée limitée à ce dépôt, « Contents : lecture & écriture ». Gardé dans ce navigateur, jamais dans page.json.',
+      remember: 'Mémoriser le jeton sur cet appareil', pendingImgs: 'images en attente de publication', publishSetup: 'Configure d’abord la publication'
     }
   };
 
