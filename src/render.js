@@ -12,15 +12,47 @@ window.Tessera = window.Tessera || {};
     system: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     rounded: 'ui-rounded, "SF Pro Rounded", "Nunito", "Quicksand", system-ui, sans-serif',
     serif: 'ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif',
-    mono: 'ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace'
+    mono: 'ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace',
+    inter: '"Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif',
+    dosis: '"Dosis Variable", Dosis, ui-rounded, system-ui, sans-serif'
   };
-  T.DEFAULT_THEME = { bg: '#F6EFE6', card: '#FFFFFF', text: '#2A211C', accent: '#D9822B', radius: 22, font: 'system' };
+  /**
+   * font     body font (key of T.FONTS)
+   * display  font for captions, counters, badges (defaults to `font`)
+   * dark     background of "inverted" cards (defaults to `text`)
+   * fontCss  optional stylesheet with @font-face rules (relative path or https URL)
+   */
+  T.DEFAULT_THEME = { bg: '#F6EFE6', card: '#FFFFFF', text: '#2A211C', accent: '#D9822B', radius: 22, font: 'system', display: '', dark: '', fontCss: '' };
+
+  /** WCAG contrast helpers: pick the most readable text colour for a background. */
+  const lum = (hex) => {
+    const m = String(hex).match(/^#?([0-9a-f]{6})$/i);
+    if (!m) return null;
+    const [r, g, b] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  T.readableOn = (bg, candidates) => {
+    if (lum(bg) == null) return candidates[0];
+    return candidates.filter((c) => lum(c) != null).sort((p, q) => contrast(bg, q) - contrast(bg, p))[0] || candidates[0];
+  };
 
   /** Theme → inline CSS custom properties. */
   T.themeVars = (theme = {}) => {
     const t = Object.assign({}, T.DEFAULT_THEME, theme);
     const clean = (v) => String(v).replace(/[;{}<>]/g, '');
-    return `--bg:${clean(t.bg)};--card:${clean(t.card)};--text:${clean(t.text)};--accent:${clean(t.accent)};--radius:${Math.max(0, Math.min(48, +t.radius || 0))}px;--font:${T.FONTS[t.font] || T.FONTS.system}`;
+    return `--bg:${clean(t.bg)};--card:${clean(t.card)};--text:${clean(t.text)};--accent:${clean(t.accent)};--radius:${Math.max(0, Math.min(48, +t.radius || 0))}px;--font:${T.FONTS[t.font] || T.FONTS.system};--display:${T.FONTS[t.display] || T.FONTS[t.font] || T.FONTS.system};--dark:${clean(t.dark || t.text)};--on-dark:${clean(T.readableOn(t.dark || t.text, [t.bg, t.text, '#FFFFFF', '#000000']))};--on-accent:${clean(T.readableOn(t.accent, ['#FFFFFF', t.bg, t.text]))}`;
+  };
+
+  /** Load the theme's @font-face stylesheet once (the build may have inlined it already). */
+  T.loadFonts = (theme = {}) => {
+    const href = T.util.safeUrl(theme.fontCss);
+    const cur = document.getElementById('tessera-fonts');
+    if (cur && (cur.tagName === 'STYLE' || cur.getAttribute('href') === href)) return;
+    if (!href) return void cur?.remove();
+    const link = cur || Object.assign(document.createElement('link'), { id: 'tessera-fonts', rel: 'stylesheet' });
+    link.href = href;
+    if (!cur) document.head.appendChild(link);
   };
 
   function profileHtml(p = {}) {
@@ -86,6 +118,7 @@ window.Tessera = window.Tessera || {};
     document.documentElement.lang = T.pageLang;
     if (s.title) document.title = s.title;
     document.documentElement.setAttribute('style', T.themeVars(s.theme));
+    T.loadFonts(s.theme);
     const tc = document.querySelector('meta[name="theme-color"]');
     if (tc) tc.setAttribute('content', Object.assign({}, T.DEFAULT_THEME, s.theme).bg);
     document.getElementById('app').innerHTML = T.pageHtml(data, opts);

@@ -96,6 +96,24 @@ const meta = [
   s.profile.avatar && `<link rel="icon" href="${esc(s.profile.avatar)}">`
 ].filter(Boolean).join('\n  ');
 
+/* ---- theme fonts: <link> to the stylesheet, or inlined <style> with data-URI fonts ---- */
+async function fontTag(href) {
+  if (!href) return '';
+  const local = !/^[a-z][\w+.-]*:/i.test(href);
+  const file = join(root, href.replace(/^\.\//, ''));
+  if (!local || !existsSync(file)) return `<link id="tessera-fonts" rel="stylesheet" href="${esc(href)}">`;
+  if (!INLINE_ASSETS) return `<link rel="preload" as="style" href="${esc(href)}">\n  <link id="tessera-fonts" rel="stylesheet" href="${esc(href)}">`;
+  let css = await readFile(file, 'utf8');
+  const dir = dirname(file);
+  for (const [, quote, url] of [...css.matchAll(/url\((['"]?)([^'")]+)\1\)/g)]) {
+    const f = resolve(dir, url);
+    if (!existsSync(f)) continue;
+    const type = { '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.otf': 'font/otf' }[extname(f)] || 'application/octet-stream';
+    css = css.split(`url(${quote}${url}${quote})`).join(`url(data:${type};base64,${(await readFile(f)).toString('base64')})`);
+  }
+  return `<style id="tessera-fonts">${css}</style>`;
+}
+
 /* ---- assemble ---- */
 const safeScript = (js) => js.replace(/<\/script/gi, '<\\/script');
 let html = await src('index.html');
@@ -103,7 +121,7 @@ html = put(html, '<html lang="en">', `<html lang="${esc(T.pageLang)}" style="${e
 html = put(html, '<title>Tessera</title>', `<title>${esc(title)}</title>`);
 html = put(html, '<meta name="description" content="">', `<meta name="description" content="${esc(description)}">`);
 html = put(html, '<meta name="theme-color" content="#F6EFE6">', `<meta name="theme-color" content="${esc(Object.assign({}, T.DEFAULT_THEME, s.theme).bg)}">`);
-html = put(html, '<!--tessera:meta-->', meta);
+html = put(html, '<!--tessera:meta-->', [meta, await fontTag(s.theme.fontCss)].filter(Boolean).join('\n  '));
 html = put(html, '<link rel="stylesheet" href="styles.css">', `<style>\n${await src('styles.css')}</style>`);
 html = put(html, '<div id="app"></div>', `<div id="app">${prerendered}</div>`);
 html = put(html, '<script type="application/json" id="page-data"></script>',

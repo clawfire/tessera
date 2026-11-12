@@ -20,12 +20,17 @@ window.Tessera = window.Tessera || {};
     clear() { try { localStorage.removeItem(KEY); } catch (e) { /* noop */ } }
   };
 
+  // A preset replaces the whole theme except the corner radius.
+  const BASE = { font: 'system', display: '', dark: '', fontCss: '' };
   const PRESETS = [
-    { name: 'Warm', bg: '#F6EFE6', card: '#FFFFFF', text: '#2A211C', accent: '#D9822B' },
-    { name: 'Paper', bg: '#F4F4F0', card: '#FFFFFF', text: '#111111', accent: '#2F5BFF' },
-    { name: 'Mint', bg: '#E8F3EE', card: '#FFFFFF', text: '#10302A', accent: '#1F9D6B' },
-    { name: 'Night', bg: '#121212', card: '#1E1E1E', text: '#F2F2F2', accent: '#A3E635' },
-    { name: 'Ember', bg: '#14110F', card: '#221C18', text: '#F5E9DA', accent: '#FF5A1F' }
+    { name: 'Warm', ...BASE, bg: '#F6EFE6', card: '#FFFFFF', text: '#2A211C', accent: '#D9822B' },
+    { name: 'Paper', ...BASE, bg: '#F4F4F0', card: '#FFFFFF', text: '#111111', accent: '#2F5BFF' },
+    { name: 'Mint', ...BASE, bg: '#E8F3EE', card: '#FFFFFF', text: '#10302A', accent: '#1F9D6B' },
+    { name: 'Night', ...BASE, bg: '#121212', card: '#1E1E1E', text: '#F2F2F2', accent: '#A3E635' },
+    { name: 'Ember', ...BASE, bg: '#14110F', card: '#221C18', text: '#F5E9DA', accent: '#FF5A1F' },
+    // Clawfire — Spring Wood / Almond / Tan / Mosque / Blue Whale / Midnight, Inter + Dosis (self-hosted)
+    { name: 'Clawfire', bg: '#F8F5F1', card: '#FFFFFF', text: '#031734', accent: '#066464', dark: '#043649', font: 'inter', display: 'dosis', fontCss: 'assets/fonts/clawfire.css' },
+    { name: 'Clawfire Night', bg: '#031734', card: '#043649', text: '#F8F5F1', accent: '#CDB37F', dark: '#066464', font: 'inter', display: 'dosis', fontCss: 'assets/fonts/clawfire.css' }
   ];
 
   const ed = (T.editor = {});
@@ -204,7 +209,10 @@ window.Tessera = window.Tessera || {};
         ${field({ key: 'accent', label: 'Accent', type: 'color' }, s.theme.accent || T.DEFAULT_THEME.accent, 'th')}
         ${field({ key: 'radius', label: 'Corner radius|Arrondi', type: 'number', min: 0, max: 48 }, s.theme.radius ?? T.DEFAULT_THEME.radius, 'th')}
         ${field({ key: 'font', label: 'Font|Police', type: 'select', options: Object.keys(T.FONTS).map((f) => [f, f]) }, s.theme.font || 'system', 'th')}
+        ${field({ key: 'display', label: 'Caption font|Police des légendes', type: 'select', options: [['', '= Font|= Police'], ...Object.keys(T.FONTS).map((f) => [f, f])] }, s.theme.display || '', 'th')}
+        ${field({ key: 'dark', label: 'Inverted cards|Cartes inversées', type: 'color' }, s.theme.dark || s.theme.text || T.DEFAULT_THEME.text, 'th')}
       </div>
+      ${field({ key: 'fontCss', label: 'Font stylesheet (@font-face)|Feuille de polices (@font-face)', type: 'url', placeholder: 'assets/fonts/my-fonts.css', help: 'Self-hosted fonts: drop .woff2 + a CSS file in assets/fonts|Polices auto-hébergées : dépose les .woff2 + un CSS dans assets/fonts' }, s.theme.fontCss, 'th')}
       <h3>${te('page')}</h3>
       ${field({ key: 'title', label: 'Page title (SEO)|Titre de la page (SEO)' }, s.title, 's')}
       ${field({ key: 'description', label: 'Description (SEO)', type: 'textarea', rows: 2 }, s.description, 's')}

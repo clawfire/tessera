@@ -89,7 +89,20 @@ The grid is 4 columns on desktop and 2 on mobile (4-wide cards collapse to 2). `
 }
 ```
 
-Fonts: `system`, `rounded`, `serif`, `mono` — all system font stacks, no third-party font CDN.
+Theme keys: `bg`, `card`, `text`, `accent`, `radius`, `font` (body), `display` (captions, badges, counters), `dark` (background of inverted cards) and `fontCss` (an optional `@font-face` stylesheet, relative or https). Text on accent and inverted cards picks the most readable colour automatically (WCAG contrast).
+
+Fonts: `system`, `rounded`, `serif`, `mono`, plus `inter` and `dosis` (shipped self-hosted in `assets/fonts/`, SIL OFL). No third-party font CDN.
+
+### Theme presets
+
+Warm · Paper · Mint · Night · Ember · **Clawfire** · **Clawfire Night**
+
+Clawfire is a palette of Spring Wood `#F8F5F1`, Almond `#E8DDCB`, Tan `#CDB37F`, Mosque `#066464`, Blue Whale `#043649` and Midnight `#031734`, set in Inter with Dosis for captions:
+
+```json
+"theme": { "bg": "#F8F5F1", "card": "#FFFFFF", "text": "#031734", "accent": "#066464", "dark": "#043649",
+           "radius": 20, "font": "inter", "display": "dosis", "fontCss": "assets/fonts/clawfire.css" }
+```
 
 ## Writing a widget
 
