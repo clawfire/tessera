@@ -122,6 +122,17 @@
       }
     },
     {
+      "id": "rouleau",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://rouleau-t02.netlify.app/",
+        "title": "Rouleau",
+        "subtitle": "A ticket generator for the Phomemo T02 — print over Bluetooth or export as PNG",
+        "icon": "🎟️"
+      }
+    },
+    {
       "id": "spoolman",
       "type": "link",
       "size": "2x1",
@@ -168,7 +179,7 @@
     {
       "id": "bench",
       "type": "text",
-      "size": "2x1",
+      "size": "4x1",
       "tone": "dark",
       "props": {
         "title": "On the bench",

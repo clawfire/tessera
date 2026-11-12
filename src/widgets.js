@@ -137,6 +137,9 @@ window.Tessera = window.Tessera || {};
     return null;
   };
 
+  /** True for pictographic characters (emoji), which carry their own colours. */
+  U.isEmoji = (s) => /\p{Extended_Pictographic}/u.test(String(s || ''));
+
   /* ---------- render helpers ---------- */
   const a = (href, inner, cls = '') => {
     const h = safeUrl(href);
@@ -168,7 +171,7 @@ window.Tessera = window.Tessera || {};
       const img = p.image && ctx.r >= 4 ? `<img class="link-img" src="${esc(safeUrl(p.image))}" alt="" loading="lazy">` : '';
       return a(
         p.url,
-        `<span class="badge" style="--b:${esc(pf.color)}">${esc(p.icon || pf.glyph)}</span>` +
+        `<span class="badge${U.isEmoji(p.icon || pf.glyph) ? ' emoji' : ''}" style="--b:${esc(pf.color)}">${esc(p.icon || pf.glyph)}</span>` +
           `<span class="link-txt"><strong>${esc(p.title || pf.name)}</strong>${p.subtitle ? `<span class="muted">${esc(p.subtitle)}</span>` : ''}</span>` +
           img + `<span class="arrow" aria-hidden="true">↗</span>`,
         'w-body link'

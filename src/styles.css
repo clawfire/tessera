@@ -44,6 +44,7 @@ small { font-size: 0.8rem; }
   .grid { --cols: 2; --gap: 12px; }
   .c4 { grid-column: span 2; }
 }
+.grid + .grid { margin-top: var(--gap); }
 .foot { margin-top: 48px; font-size: .85rem; text-align: center; }
 
 /* ---------- card ---------- */
@@ -274,6 +275,9 @@ body.editing .w:hover .w-tools, body.editing .w.selected .w-tools { display: fle
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 /* badges on coloured cards: tint instead of the (possibly identical) accent */
 .tone-accent .badge { background: color-mix(in srgb, currentColor 20%, transparent); color: inherit; }
+/* Emoji bring their own colours: put them on a light chip tinted with the brand colour, never on a solid fill */
+.badge.emoji { background: color-mix(in srgb, var(--b, var(--accent)) 14%, #fff); color: var(--b, var(--accent)); font-size: 1.35rem; font-weight: 400; }
+.tone-accent .badge.emoji, .tone-dark .badge.emoji { background: rgb(255 255 255 / .92); color: var(--accent); }
 /* ghost cards: no lift/shadow on hover (a shadow under a see-through card reads as misaligned) */
 .tone-ghost:has(> a.w-body):hover {
   transform: none; box-shadow: none;

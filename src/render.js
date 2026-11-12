@@ -99,6 +99,17 @@ window.Tessera = window.Tessera || {};
     return `<article class="${cls}" data-id="${esc(w.id)}"${opts.editing ? ' draggable="true"' : ''}>${body}${opts.editing ? toolsHtml(w, size) : ''}</article>`;
   }
 
+  /**
+   * Split widgets into one grid per section, so `grid-auto-flow: dense`
+   * fills holes inside a section but never pulls cards across a section title.
+   */
+  const groups = (widgets) =>
+    widgets.reduce((acc, w) => {
+      if (w.type === 'section' || !acc.length) acc.push([]);
+      acc[acc.length - 1].push(w);
+      return acc;
+    }, []);
+
   /** Full page markup (inside #app). */
   T.pageHtml = (data, opts = {}) => {
     const s = data.settings || {};
@@ -106,7 +117,7 @@ window.Tessera = window.Tessera || {};
     const fab = s.showEditButton && !opts.editing ? `<a class="fab-edit" href="#edit" title="Edit" aria-label="Edit page">✎</a>` : '';
     return `<main class="page" style="${T.themeVars(s.theme)}">
       ${profileHtml(s.profile)}
-      <div class="grid-wrap"><section class="grid" id="grid">${(data.widgets || []).map((w) => widgetHtml(w, opts)).join('')}</section></div>
+      <div class="grid-wrap" id="grid">${groups(data.widgets || []).map((g) => `<section class="grid">${g.map((w) => widgetHtml(w, opts)).join('')}</section>`).join('')}</div>
       ${footer ? `<footer class="foot muted">${md(footer)}</footer>` : ''}
     </main>${fab}`;
   };

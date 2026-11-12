@@ -8,15 +8,24 @@ window.Tessera = window.Tessera || {};
 (function (T) {
   'use strict';
   const { esc, uid } = T.util;
-  const KEY = 'tessera:draft:v1';
+  // One draft per page URL, tied to the published page.json it started from:
+  // a draft made on another page (or before page.json changed) is never restored.
+  const KEY = 'tessera:draft:v2:' + location.pathname;
+  const hash = (s) => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+  const baseHash = () => hash(JSON.stringify(T.published));
   const te = (k) => T.te(k);
   const L = (s) => T.L(s);
   const clone = (o) => JSON.parse(JSON.stringify(o));
   const $ = (s, r = document) => r.querySelector(s);
 
   const store = {
-    get() { try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } },
-    set(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { /* private mode */ } },
+    get() {
+      try {
+        const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+        return s && s.base === baseHash() ? s.data : null;
+      } catch (e) { return null; }
+    },
+    set(d) { try { localStorage.setItem(KEY, JSON.stringify({ base: baseHash(), data: d })); } catch (e) { /* private mode */ } },
     clear() { try { localStorage.removeItem(KEY); } catch (e) { /* noop */ } }
   };
 
