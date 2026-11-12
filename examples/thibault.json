@@ -41,7 +41,8 @@
       "size": "1x1",
       "props": {
         "url": "https://instagram.com/clawfire",
-        "subtitle": "@clawfire"
+        "subtitle": "@clawfire",
+        "icon": ""
       }
     },
     {
@@ -130,29 +131,8 @@
         "title": "Rouleau",
         "subtitle": "A ticket generator for the Phomemo T02 — print over Bluetooth or export as PNG",
         "icon": "🎟️"
-      }
-    },
-    {
-      "id": "spoolman",
-      "type": "link",
-      "size": "2x1",
-      "props": {
-        "url": "https://github.com/clawfire/spoolman_ynh",
-        "title": "spoolman_ynh",
-        "subtitle": "Spoolman, packaged for YunoHost",
-        "icon": "🧵"
-      }
-    },
-    {
-      "id": "tessera",
-      "type": "link",
-      "size": "2x1",
-      "props": {
-        "url": "https://github.com/clawfire/tessera",
-        "title": "Tessera",
-        "subtitle": "This very page — open source, self-hosted",
-        "icon": "🧩"
-      }
+      },
+      "tone": "accent"
     },
     {
       "id": "immotop",
@@ -169,7 +149,7 @@
     {
       "id": "immotop-gh",
       "type": "link",
-      "size": "2x1",
+      "size": "1x1",
       "props": {
         "url": "https://github.com/clawfire/immotop-companion",
         "title": "Immotop Companion",
@@ -177,9 +157,31 @@
       }
     },
     {
+      "id": "spoolman",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire/spoolman_ynh",
+        "title": "spoolman_ynh",
+        "subtitle": "Spoolman, packaged for YunoHost",
+        "icon": "🧵"
+      }
+    },
+    {
+      "id": "tessera",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire/tessera",
+        "title": "Tessera",
+        "subtitle": "This very page — open source, self-hosted",
+        "icon": "🧩"
+      }
+    },
+    {
       "id": "bench",
       "type": "text",
-      "size": "4x1",
+      "size": "2x1",
       "tone": "dark",
       "props": {
         "title": "On the bench",
