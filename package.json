@@ -1,0 +1,15 @@
+{
+  "name": "tessera",
+  "version": "0.1.0",
+  "description": "Self-hosted, open-source link-in-bio page made of draggable widgets. Zero dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "build:single": "node scripts/build.mjs --inline-assets"
+  },
+  "keywords": ["link-in-bio", "bento", "personal-page", "self-hosted", "static-site", "indieweb"]
+}

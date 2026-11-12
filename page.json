@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "settings": {
+    "title": "Juno Reyes — maker & tiny tools",
+    "description": "3D printing, open hardware and small useful things. Based in Luxembourg.",
+    "lang": "en",
+    "showEditButton": true,
+    "profile": {
+      "avatar": "assets/avatar.svg",
+      "name": "Juno Reyes",
+      "tagline": "Maker of small, useful, slightly over-engineered things.",
+      "location": "Luxembourg",
+      "bio": "I design 3D-printed tools, write about open hardware and run a monthly **open workshop night**. Everything I make is [open source](https://github.com)."
+    },
+    "theme": { "bg": "#F6EFE6", "card": "#FFFFFF", "text": "#2A211C", "accent": "#D9822B", "radius": 22, "font": "system" }
+  },
+  "widgets": [
+    { "id": "hello", "type": "text", "size": "2x1", "props": { "title": "Hey, I’m Juno 👋", "body": "This page is my little corner of the web — **self-hosted**, no tracking, no platform lock-in. Drag me around in edit mode." } },
+    { "id": "ig", "type": "link", "size": "1x1", "props": { "url": "https://instagram.com/", "subtitle": "@juno.makes · 4.2K" } },
+    { "id": "gh", "type": "link", "size": "1x1", "props": { "url": "https://github.com/", "subtitle": "28 repos" } },
+    { "id": "workshop", "type": "image", "size": "2x2", "props": { "src": "assets/workshop.svg", "alt": "Workbench with a 3D printer", "caption": "The workshop, Tuesday 11pm" } },
+    { "id": "music", "type": "music", "size": "2x1", "props": { "url": "https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn", "title": "Workshop playlist" } },
+    { "id": "stat", "type": "stat", "size": "1x1", "props": { "value": "127", "label": "parts printed", "caption": "in 2026, so far" } },
+    { "id": "cd", "type": "countdown", "size": "1x1", "tone": "dark", "props": { "label": "until the shop opens", "target": "2027-01-15" } },
+    { "id": "s1", "type": "section", "size": "section", "props": { "title": "Workshop & events" } },
+    { "id": "ev", "type": "event", "size": "2x1", "props": { "title": "Open workshop night", "date": "2026-12-05", "start": "19:00", "end": "22:00", "venue": "Rotondes", "city": "Luxembourg", "url": "https://example.com/tickets" } },
+    { "id": "map", "type": "map", "size": "2x1", "props": { "label": "Home base · Luxembourg", "lat": 49.6116, "lon": 6.1319, "zoom": 12 } },
+    { "id": "gal", "type": "gallery", "size": "2x2", "props": { "items": "assets/print-1.svg | Cable organiser v3\nassets/print-2.svg | Mountain lamp\nassets/print-3.svg | Desk tile, 12° tilt" } },
+    { "id": "goals", "type": "goals", "size": "2x2", "tone": "accent", "props": { "title": "2026 goals", "items": "Open the online shop | 80\nPublish 20 open models | 65\nNewsletter readers (1K) | 42\nLearn KiCad properly | 30" } },
+    { "id": "vid", "type": "video", "size": "2x1", "props": { "url": "https://www.youtube.com/watch?v=aircAruvnKk", "title": "A video I keep rewatching" } },
+    { "id": "masto", "type": "link", "size": "1x1", "props": { "url": "https://mastodon.social/", "title": "Mastodon", "subtitle": "@juno@mastodon.social" } },
+    { "id": "bsky", "type": "link", "size": "1x1", "props": { "url": "https://bsky.app/", "subtitle": "@juno.bsky.social" } },
+    { "id": "s2", "type": "section", "size": "section", "props": { "title": "Work with me" } },
+    { "id": "services", "type": "list", "size": "2x2", "props": { "title": "Services", "items": "Intro call | 20 min | free\nCustom part design | per part | from €80\nPrint farm run | up to 50 units | quote\nWorkshop for teams | half day | €450" } },
+    { "id": "contact", "type": "contact", "size": "2x2", "props": { "title": "Say hello", "email": "hello@example.com", "topics": "Custom part, Workshop, Press, Just saying hi", "note": "I reply within two days." } },
+    { "id": "news", "type": "newsletter", "size": "4x1", "tone": "dark", "props": { "title": "Workshop notes", "text": "One email a month: what I printed, what broke, what I learned.", "action": "", "button": "Subscribe" } }
+  ]
+}
