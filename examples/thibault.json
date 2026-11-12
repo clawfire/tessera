@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "settings": {
+    "title": "Thibault — Clawfire",
+    "description": "Maker, tinkerer and open-source enthusiast based in Luxembourg. 3D printing, small tools, focus sessions.",
+    "lang": "en",
+    "showEditButton": false,
+    "footer": "Self-hosted with [Tessera](https://github.com/clawfire/tessera) — no tracking, no lock-in.",
+    "profile": {
+      "avatar": "",
+      "name": "Thibault",
+      "tagline": "Maker, tinkerer, open-source enthusiast.",
+      "location": "Luxembourg",
+      "bio": "I 3D print useful things, build small open-source tools when nothing does the job, and write about it all on [clawfire.net](https://clawfire.net)."
+    },
+    "theme": {
+      "bg": "#F8F5F1",
+      "card": "#FFFFFF",
+      "text": "#031734",
+      "accent": "#066464",
+      "dark": "#043649",
+      "radius": 20,
+      "font": "inter",
+      "display": "dosis",
+      "fontCss": "assets/fonts/clawfire.css"
+    }
+  },
+  "widgets": [
+    {
+      "id": "hello",
+      "type": "text",
+      "size": "2x1",
+      "props": {
+        "title": "Hi, I’m Thibault 👋",
+        "body": "This is my corner of the web: the things I print, the tools I build, and the rituals that keep me going. **Self-hosted, open source, no algorithm.**"
+      }
+    },
+    {
+      "id": "ig",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://instagram.com/clawfire",
+        "subtitle": "@clawfire"
+      }
+    },
+    {
+      "id": "gh",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire",
+        "subtitle": "@clawfire"
+      }
+    },
+    {
+      "id": "blog",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://clawfire.net",
+        "title": "clawfire.net",
+        "subtitle": "Notes, projects & reflections",
+        "icon": "✍️"
+      }
+    },
+    {
+      "id": "printables",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.printables.com/@clawfire",
+        "subtitle": "My 3D models"
+      }
+    },
+    {
+      "id": "bsky",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://bsky.app/profile/clawfire.net",
+        "subtitle": "Say hi"
+      }
+    },
+    {
+      "id": "s-build",
+      "type": "section",
+      "size": "section",
+      "props": {
+        "title": "Things I build"
+      }
+    },
+    {
+      "id": "t02",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://github.com/clawfire/phomemo-t02-macos",
+        "title": "phomemo-t02-macos",
+        "subtitle": "A macOS driver for the Phomemo T02 thermal printer",
+        "icon": "🧾"
+      }
+    },
+    {
+      "id": "spoolman",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://github.com/clawfire/spoolman_ynh",
+        "title": "spoolman_ynh",
+        "subtitle": "Spoolman, packaged for YunoHost",
+        "icon": "🧵"
+      }
+    },
+    {
+      "id": "tessera",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://github.com/clawfire/tessera",
+        "title": "Tessera",
+        "subtitle": "This very page — open source, self-hosted",
+        "icon": "🧩"
+      }
+    },
+    {
+      "id": "bench",
+      "type": "text",
+      "size": "2x1",
+      "tone": "dark",
+      "props": {
+        "title": "On the bench",
+        "body": "A Prusa MK4S, a Phomemo T02 that prints far more tickets than it should, and an unreasonable amount of filament."
+      }
+    },
+    {
+      "id": "s-focus",
+      "type": "section",
+      "size": "section",
+      "props": {
+        "title": "Let’s focus together"
+      }
+    },
+    {
+      "id": "focus",
+      "type": "link",
+      "size": "2x1",
+      "tone": "accent",
+      "props": {
+        "url": "https://clawfire.net/focus/",
+        "title": "Focus sessions",
+        "subtitle": "Free body-doubling on weekday mornings · 4 seats max",
+        "icon": "🎧"
+      }
+    },
+    {
+      "id": "asot",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.astateoftrance.com",
+        "title": "A State of Trance",
+        "subtitle": "My yearly ritual",
+        "icon": "🎶"
+      }
+    },
+    {
+      "id": "pro",
+      "type": "link",
+      "size": "1x1",
+      "tone": "ghost",
+      "props": {
+        "url": "https://thibaultmilan.com",
+        "title": "Work stuff",
+        "subtitle": "thibaultmilan.com",
+        "icon": "💼"
+      }
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "size": "4x1",
+      "props": {
+        "label": "Home base · Luxembourg",
+        "lat": 49.6116,
+        "lon": 6.1319,
+        "zoom": 9
+      }
+    }
+  ]
+}

@@ -85,7 +85,8 @@ small { font-size: 0.8rem; }
 }
 .link-txt { display: flex; flex-direction: column; margin-top: auto; min-width: 0; }
 .link-txt strong { font-size: 1.02rem; }
-.link-txt span { font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.link-txt span { font-size: .88rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+.c1 .link-txt span { -webkit-line-clamp: 1; line-clamp: 1; white-space: nowrap; text-overflow: ellipsis; display: block; }
 .arrow { position: absolute; top: 16px; right: 18px; font-size: 1rem; opacity: .35; transition: opacity .15s, transform .15s; }
 .w:hover .arrow { opacity: .9; transform: translate(2px, -2px); }
 .c2.r2 .link, .c4.r2 .link { flex-direction: row; align-items: center; gap: 14px; }
@@ -256,3 +257,5 @@ body.editing .w:hover .w-tools, body.editing .w.selected .w-tools { display: fle
   .panel { top: auto; left: 8px; right: 8px; bottom: 76px; width: auto; height: 62vh; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+/* badges on coloured cards: tint instead of the (possibly identical) accent */
+.tone-accent .badge { background: color-mix(in srgb, currentColor 20%, transparent); color: inherit; }
