@@ -1,38 +1,311 @@
 {
   "version": 1,
   "settings": {
-    "title": "Juno Reyes — maker & tiny tools",
-    "description": "3D printing, open hardware and small useful things. Based in Luxembourg.",
+    "title": "Thibault — Clawfire",
+    "description": "Maker, tinkerer and open-source enthusiast based in Luxembourg. 3D printing, small tools, focus sessions.",
     "lang": "en",
-    "showEditButton": true,
+    "showEditButton": false,
+    "footer": "Self-hosted with [Tessera](https://github.com/clawfire/tessera) — no tracking, no lock-in.",
     "profile": {
-      "avatar": "assets/avatar.svg",
-      "name": "Juno Reyes",
-      "tagline": "Maker of small, useful, slightly over-engineered things.",
+      "avatar": "assets/uploads/pxl-20250603-070645705-preview-rev-1-d6b49242.webp",
+      "name": "Thibault",
+      "tagline": "Maker, tinkerer, open-source enthusiast.",
       "location": "Luxembourg",
-      "bio": "I design 3D-printed tools, write about open hardware and run a monthly **open workshop night**. Everything I make is [open source](https://github.com)."
+      "bio": "I 3D print useful things, build small open-source tools when nothing does the job, and write about it all on [clawfire.net](https://clawfire.net)."
     },
-    "theme": { "bg": "#F6EFE6", "card": "#FFFFFF", "text": "#2A211C", "accent": "#D9822B", "radius": 22, "font": "system" }
+    "theme": {
+      "bg": "#F8F5F1",
+      "card": "#FFFFFF",
+      "text": "#031734",
+      "accent": "#066464",
+      "dark": "#043649",
+      "radius": 20,
+      "font": "inter",
+      "display": "dosis",
+      "fontCss": "assets/fonts/clawfire.css"
+    },
+    "publish": {
+      "provider": "github",
+      "repo": "clawfire/tessera",
+      "branch": "thibault",
+      "path": "page.json"
+    }
   },
   "widgets": [
-    { "id": "hello", "type": "text", "size": "2x1", "props": { "title": "Hey, I’m Juno 👋", "body": "This page is my little corner of the web — **self-hosted**, no tracking, no platform lock-in. Drag me around in edit mode." } },
-    { "id": "ig", "type": "link", "size": "1x1", "props": { "url": "https://instagram.com/", "subtitle": "@juno.makes · 4.2K" } },
-    { "id": "gh", "type": "link", "size": "1x1", "props": { "url": "https://github.com/", "subtitle": "28 repos" } },
-    { "id": "workshop", "type": "image", "size": "2x2", "props": { "src": "assets/workshop.svg", "alt": "Workbench with a 3D printer", "caption": "The workshop, Tuesday 11pm" } },
-    { "id": "music", "type": "music", "size": "2x1", "props": { "url": "https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn", "title": "Workshop playlist" } },
-    { "id": "stat", "type": "stat", "size": "1x1", "props": { "value": "127", "label": "parts printed", "caption": "in 2026, so far" } },
-    { "id": "cd", "type": "countdown", "size": "1x1", "tone": "dark", "props": { "label": "until the shop opens", "target": "2027-01-15" } },
-    { "id": "s1", "type": "section", "size": "section", "props": { "title": "Workshop & events" } },
-    { "id": "ev", "type": "event", "size": "2x1", "props": { "title": "Open workshop night", "date": "2026-12-05", "start": "19:00", "end": "22:00", "venue": "Rotondes", "city": "Luxembourg", "url": "https://example.com/tickets" } },
-    { "id": "map", "type": "map", "size": "2x1", "props": { "label": "Home base · Luxembourg", "lat": 49.6116, "lon": 6.1319, "zoom": 12 } },
-    { "id": "gal", "type": "gallery", "size": "2x2", "props": { "items": "assets/print-1.svg | Cable organiser v3\nassets/print-2.svg | Mountain lamp\nassets/print-3.svg | Desk tile, 12° tilt" } },
-    { "id": "goals", "type": "goals", "size": "2x2", "tone": "accent", "props": { "title": "2026 goals", "items": "Open the online shop | 80\nPublish 20 open models | 65\nNewsletter readers (1K) | 42\nLearn KiCad properly | 30" } },
-    { "id": "vid", "type": "video", "size": "2x1", "props": { "url": "https://www.youtube.com/watch?v=aircAruvnKk", "title": "A video I keep rewatching" } },
-    { "id": "masto", "type": "link", "size": "1x1", "props": { "url": "https://mastodon.social/", "title": "Mastodon", "subtitle": "@juno@mastodon.social" } },
-    { "id": "bsky", "type": "link", "size": "1x1", "props": { "url": "https://bsky.app/", "subtitle": "@juno.bsky.social" } },
-    { "id": "s2", "type": "section", "size": "section", "props": { "title": "Work with me" } },
-    { "id": "services", "type": "list", "size": "2x2", "props": { "title": "Services", "items": "Intro call | 20 min | free\nCustom part design | per part | from €80\nPrint farm run | up to 50 units | quote\nWorkshop for teams | half day | €450" } },
-    { "id": "contact", "type": "contact", "size": "2x2", "props": { "title": "Say hello", "email": "hello@example.com", "topics": "Custom part, Workshop, Press, Just saying hi", "note": "I reply within two days." } },
-    { "id": "news", "type": "newsletter", "size": "4x1", "tone": "dark", "props": { "title": "Workshop notes", "text": "One email a month: what I printed, what broke, what I learned.", "action": "", "button": "Subscribe" } }
+    {
+      "id": "hello",
+      "type": "text",
+      "size": "2x2",
+      "props": {
+        "title": "Hi, I’m Thibault 👋",
+        "body": "This is my corner of the web: the things I print, the tools I build, and the rituals that keep me going. **Self-hosted, open source, no algorithm.**"
+      }
+    },
+    {
+      "id": "ig",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://instagram.com/clawfire",
+        "subtitle": "@clawfire • 2.4K",
+        "icon": "",
+        "image": ""
+      }
+    },
+    {
+      "id": "gh",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire",
+        "subtitle": "78 repositories"
+      }
+    },
+    {
+      "id": "blog",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://clawfire.net",
+        "title": "clawfire.net",
+        "subtitle": "Notes, projects & reflections",
+        "icon": "✍️"
+      }
+    },
+    {
+      "id": "printables",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.prusaprinters.org/social/163072-clawfire/prints",
+        "subtitle": "My 3D models"
+      }
+    },
+    {
+      "id": "masto",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://m.thibau.lt/@clawfire",
+        "title": "Mastodon",
+        "subtitle": "@clawfire@m.thibau.lt",
+        "icon": "🐘"
+      }
+    },
+    {
+      "id": "yt",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.youtube.com/channel/UCW_kQcijPR7HZ02RFP4XxSA",
+        "subtitle": "Just a bunch of videos"
+      }
+    },
+    {
+      "id": "tg",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://t.me/clawfire",
+        "subtitle": "@clawfire"
+      }
+    },
+    {
+      "id": "s-build",
+      "type": "section",
+      "size": "section",
+      "props": {
+        "title": "Things I build"
+      }
+    },
+    {
+      "id": "t02",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://github.com/clawfire/phomemo-t02-macos",
+        "title": "phomemo-t02-macos",
+        "subtitle": "A macOS driver for the Phomemo T02 thermal printer",
+        "icon": "🧾"
+      }
+    },
+    {
+      "id": "rouleau",
+      "type": "link",
+      "size": "2x1",
+      "props": {
+        "url": "https://rouleau-t02.netlify.app/",
+        "title": "Rouleau",
+        "subtitle": "A ticket generator for the Phomemo T02 — print over Bluetooth or export as PNG",
+        "icon": "🎟️"
+      },
+      "tone": "accent"
+    },
+    {
+      "id": "immotop",
+      "type": "link",
+      "size": "2x1",
+      "tone": "accent",
+      "props": {
+        "url": "https://chromewebstore.google.com/detail/immotop-companion/cplnfklcljjhphjjjmmhmkfclcmemfkb",
+        "title": "Immotop Companion",
+        "subtitle": "Chrome extension for immotop.lu — get it on the Chrome Web Store",
+        "icon": "🏠"
+      }
+    },
+    {
+      "id": "immotop-gh",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire/immotop-companion",
+        "title": "Immotop Companion",
+        "subtitle": "Source code"
+      }
+    },
+    {
+      "id": "spoolman",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire/spoolman_ynh",
+        "title": "spoolman_ynh",
+        "subtitle": "Spoolman, packaged for YunoHost",
+        "icon": "🧵"
+      }
+    },
+    {
+      "id": "tessera",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://github.com/clawfire/tessera",
+        "title": "Tessera",
+        "subtitle": "This very page — open source, self-hosted",
+        "icon": "🧩"
+      }
+    },
+    {
+      "id": "bench",
+      "type": "text",
+      "size": "1x1",
+      "tone": "dark",
+      "props": {
+        "title": "On the bench",
+        "body": "A Prusa MK4S, a Phomemo T02 that prints far more tickets than it should, and an unreasonable amount of filament."
+      }
+    },
+    {
+      "id": "wzptpuxg",
+      "type": "music",
+      "size": "2x1",
+      "props": {
+        "url": "https://music.youtube.com/playlist?list=PL-dV4j2FtJiuJxTgLaGP1L-YePYbcAotO",
+        "title": ""
+      }
+    },
+    {
+      "id": "s-focus",
+      "type": "section",
+      "size": "section",
+      "props": {
+        "title": "Let’s focus together"
+      }
+    },
+    {
+      "id": "wotg3jhi",
+      "type": "embed",
+      "size": "2x2",
+      "props": {
+        "mode": "code",
+        "url": "",
+        "code": "<div style=\"height: 100vh;min-height: 360px\"><script src=\"https://cdn.jsdelivr.net/ghost/signup-form@~0.4/umd/signup-form.min.js\" data-background-color=\"#F8F5F1\" data-text-color=\"#051734\" data-button-color=\"#066464\" data-button-text-color=\"#FFFFFF\" data-title=\"Thibault Milan\" data-description=\"Head of Digital &amp; Platform at Paperjam. Neurospicy, AI-curious, allergic to vendor lock-in. Based in Luxembourg.\" data-icon=\"https://thibaultmilan.com/content/images/size/w192h192/2026/06/TM.png\" data-site=\"https://thibaultmilan.com/\" data-locale=\"en\" async></script></div>",
+        "title": "Embed"
+      },
+      "tone": "accent"
+    },
+    {
+      "id": "focus",
+      "type": "link",
+      "size": "2x1",
+      "tone": "accent",
+      "props": {
+        "url": "https://clawfire.net/focus/",
+        "title": "Focus sessions",
+        "subtitle": "Free body-doubling on weekday mornings · 4 seats max",
+        "icon": "🎧"
+      }
+    },
+    {
+      "id": "asot",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.astateoftrance.com",
+        "title": "A State of Trance",
+        "subtitle": "My yearly ritual",
+        "icon": "🎶"
+      }
+    },
+    {
+      "id": "pro",
+      "type": "link",
+      "size": "1x1",
+      "tone": "ghost",
+      "props": {
+        "url": "https://thibaultmilan.com",
+        "title": "Work stuff",
+        "subtitle": "thibaultmilan.com",
+        "icon": "💼"
+      }
+    },
+    {
+      "id": "s-shop",
+      "type": "section",
+      "size": "section",
+      "props": {
+        "title": "Shop, wishlist & deals"
+      }
+    },
+    {
+      "id": "vinted",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.vinted.lu/member/24650969-clawfire",
+        "subtitle": "Things I sell"
+      }
+    },
+    {
+      "id": "wishlist",
+      "type": "link",
+      "size": "1x1",
+      "props": {
+        "url": "https://www.amazon.de/hz/wishlist/ls/359TBDAUJHIDG",
+        "title": "Wishlist",
+        "subtitle": "Amazon",
+        "icon": "🎁"
+      }
+    },
+    {
+      "id": "deals",
+      "type": "list",
+      "size": "2x2",
+      "props": {
+        "title": "Deals I share",
+        "items": "Neverless | Earn 12.78%/year with Strategies™ | referral | https://neverless.com/referral\nPaperwallet | $10 cashback | referral | https://lnk.rise-ai.com/bLvoectXBAL8F9E\nLedger | $10 cashback on a hardware wallet | referral | https://shop.ledger.com/fr\nStandard Resume | $10 off PRO | referral | https://standardresume.co/friends/V7KCSkHp"
+      }
+    },
+    {
+      "id": "map",
+      "type": "map",
+      "size": "2x1",
+      "props": {
+        "label": "Home base · Luxembourg",
+        "lat": 49.6116,
+        "lon": 6.1319,
+        "zoom": 9
+      }
+    }
   ]
 }
