@@ -1,3 +1,8 @@
 [build]
   command = "node scripts/build.mjs"
   publish = "dist"
+
+[build.environment]
+  # absolute og:url / og:image / canonical for share previews
+  TESSERA_URL = "https://tessera-clawfire.netlify.app"
+  NODE_VERSION = "22"
