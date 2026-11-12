@@ -29,6 +29,7 @@ npm run dev          # http://localhost:5173  ·  editor: http://localhost:5173/
 3. Commit & push. CI builds `dist/` and deploys.
 
 ```bash
+npm test              # zero-dependency smoke tests
 npm run build         # dist/index.html + dist/assets/
 npm run build:single  # one HTML file, local assets inlined as data URIs
 ```
