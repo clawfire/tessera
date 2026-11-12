@@ -69,7 +69,7 @@ Set `TESSERA_URL=https://you.example.com` at build time for absolute `og:url` / 
 | `goals` | Progress bars, one `label \| percent` per line | 2×1 2×2 4×1 1×2 |
 | `list` | Experience / services / anything: `title \| subtitle \| dates \| url` | 2×2 2×1 1×2 4×1 4×2 |
 | `newsletter` | Email form posting to any provider (Buttondown, Listmonk, Mailchimp, Brevo…) | 2×1 2×2 4×1 |
-| `contact` | Topic + message form that opens the visitor's mail app (`mailto:`) — no server | 2×2 1×2 |
+| `contact` | Topic + message form that opens the visitor’s mail app (`mailto:`) — no server | 2×2 2×1 |
 | `embed` | Any https iframe: Cal.com, Calendly, Google Calendar, Framaforms… | 2×2 2×1 4×1 4×2 1×2 |
 | `section` | Thin full-width heading to group cards | full width |
 
