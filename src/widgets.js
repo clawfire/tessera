@@ -443,14 +443,36 @@ window.Tessera = window.Tessera || {};
     }
   });
 
+  /**
+   * Embed code (<script>…, <div>…) is loaded from a data: URL. Such a document gets a unique,
+   * opaque origin: its scripts run, but can't read the page, its storage (e.g. the publishing
+   * token) or its cookies. Unlike a sandboxed srcdoc, the iframes the snippet creates itself
+   * (Ghost signup forms, Tally, Calendly…) keep their own origin, so they work.
+   */
+  U.embedDoc = (code) => {
+    const th = Object.assign({ text: '#2A211C', font: 'system' }, T.DEFAULT_THEME, T.current?.settings?.theme);
+    const font = (T.FONTS && (T.FONTS[th.font] || T.FONTS.system)) || 'system-ui, sans-serif';
+    const doc = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_blank">` +
+      `<style>html,body{margin:0;padding:0;background:transparent;color:${String(th.text).replace(/[;{}<>"]/g, '')};font-family:${font.replace(/[<>]/g, '')}}` +
+      `body{min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}</style>` +
+      `</head><body>${code}</body></html>`;
+    return 'data:text/html;charset=utf-8,' + encodeURIComponent(doc);
+  };
+
   def('embed', {
-    label: 'Embed (iframe)|Intégration (iframe)', icon: '🧩', sizes: ['2x2', '2x1', '4x1', '4x2', '1x2'],
-    defaults: { url: '', title: 'Embed' },
+    label: 'Embed (URL or code)|Intégration (URL ou code)', icon: '🧩', sizes: ['2x2', '2x1', '4x1', '4x2', '1x2'],
+    defaults: { mode: 'url', url: '', code: '', title: 'Embed' },
     fields: [
+      { key: 'mode', label: 'Type', type: 'select', options: [['url', 'Page URL (iframe)|URL d’une page (iframe)'], ['code', 'Embed code (HTML / script)|Code d’intégration (HTML / script)']] },
       { key: 'url', label: 'URL (https)', type: 'url', help: 'Cal.com, Calendly, Google Calendar, Framaforms, Figma…' },
+      { key: 'code', label: 'Embed code|Code d’intégration', type: 'textarea', rows: 7, placeholder: '<script src="https://…"></script>', help: 'Tally, Calendly inline, Substack, Ko-fi, Bluesky/Mastodon posts… Runs isolated: it can’t access your page.||Tally, Calendly en ligne, Substack, Ko-fi, posts Bluesky/Mastodon… Exécuté isolé : il n’a pas accès à ta page.' },
       { key: 'title', label: 'Title (accessibility)|Titre (accessibilité)' }
     ],
     render: (p) => {
+      if (p.mode === 'code' || (!p.mode && p.code)) {
+        if (!String(p.code || '').trim()) return ph('🧩', '<script>…</script>');
+        return `<div class="w-body embed"><iframe src="${esc(U.embedDoc(p.code))}" title="${esc(p.title || 'Embed')}" loading="lazy" allow="clipboard-write; fullscreen; encrypted-media; autoplay"></iframe></div>`;
+      }
       const s = safeUrl(p.url);
       return /^https:\/\/.+/.test(s) ? iframe(s, p.title) : ph('🧩', 'https:// URL');
     }
