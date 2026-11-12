@@ -12,12 +12,12 @@ window.Tessera = window.Tessera || {};
     en: {
       addToCal: 'Add to calendar', tickets: 'Tickets', subscribe: 'Subscribe', send: 'Send',
       emailPh: 'you@example.com', messagePh: 'Your message…', days: 'days to go', day: 'day to go',
-      left: 'to go', done: 'It’s here', topic: 'Topic'
+      left: 'to go', done: 'It’s here', topic: 'Topic', tracks: 'tracks', play: 'Play'
     },
     fr: {
       addToCal: 'Ajouter au calendrier', tickets: 'Billets', subscribe: 'S’abonner', send: 'Envoyer',
       emailPh: 'vous@exemple.com', messagePh: 'Votre message…', days: 'jours restants', day: 'jour restant',
-      left: 'restant', done: 'C’est le jour J', topic: 'Sujet'
+      left: 'restant', done: 'C’est le jour J', topic: 'Sujet', tracks: 'titres', play: 'Lecture'
     }
   };
 

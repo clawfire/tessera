@@ -133,8 +133,10 @@ window.Tessera = window.Tessera || {};
     const tc = document.querySelector('meta[name="theme-color"]');
     if (tc) tc.setAttribute('content', Object.assign({}, T.DEFAULT_THEME, s.theme).bg);
     T.unmountMaps?.();
+    T.unmountYouTube?.();
     document.getElementById('app').innerHTML = T.pageHtml(data, opts);
     T.mountMaps?.(data);
+    T.mountYouTube?.();
     T.tick();
   };
 

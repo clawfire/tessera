@@ -14,12 +14,14 @@ import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join, normalize, extname, resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { fetchPlaylist } from './lib/youtube.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const port = Number(process.env.PORT || 5173);
 const pageFile = resolve(root, process.env.TESSERA_PAGE || 'page.json');
 const uploads = join(root, 'assets', 'uploads');
 const MAX_BODY = 20 * 1024 * 1024;
+const ytCache = new Map();
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif', '.mp3': 'audio/mpeg', '.mp4': 'video/mp4', '.pdf': 'application/pdf', '.woff2': 'font/woff2' };
 
 const json = (res, code, obj) => res.writeHead(code, { 'content-type': 'application/json', 'cache-control': 'no-store' }).end(JSON.stringify(obj));
@@ -59,6 +61,16 @@ async function api(req, res, url) {
     await writeFile(pageFile, text);
     console.log('✓ saved ' + relative(root, pageFile));
     return json(res, 200, { path: relative(root, pageFile) });
+  }
+  if (url.pathname === '/__tessera/youtube-playlist') {
+    const list = url.searchParams.get('list') || '';
+    if (!/^[\w-]{10,64}$/.test(list)) return json(res, 400, { error: 'bad list id' });
+    const hit = ytCache.get(list);
+    if (hit && Date.now() - hit.at < 10 * 60 * 1000) return json(res, 200, hit.data);
+    const data = await fetchPlaylist(list);
+    ytCache.set(list, { at: Date.now(), data });
+    console.log(`♫ ${data.title || list}: ${data.items.length} tracks`);
+    return json(res, 200, data);
   }
   return json(res, 404, { error: 'unknown endpoint' });
 }

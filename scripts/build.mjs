@@ -16,6 +16,7 @@ import { existsSync } from 'node:fs';
 import { join, dirname, extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { fetchPlaylist, playlistId } from './lib/youtube.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = new Set(process.argv.slice(2));
@@ -23,7 +24,7 @@ const INLINE_ASSETS = args.has('--inline-assets');
 const pagePath = resolve(process.env.TESSERA_PAGE || join(root, 'page.json'));
 const siteUrl = (process.env.TESSERA_URL || '').replace(/\/$/, '');
 const out = join(root, 'dist');
-const SCRIPTS = ['i18n.js', 'widgets.js', 'render.js', 'maps.js', 'assets.js', 'publish.js', 'editor.js', 'app.js'];
+const SCRIPTS = ['i18n.js', 'widgets.js', 'render.js', 'maps.js', 'youtube.js', 'assets.js', 'publish.js', 'editor.js', 'app.js'];
 const MIME = { '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif' };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -67,7 +68,19 @@ async function inlineGallery(data) {
 }
 
 const raw = JSON.parse(await readFile(pagePath, 'utf8'));
-let data = INLINE_ASSETS ? await inlineGallery(await inlineAssets(raw)) : raw;
+let data = INLINE_ASSETS ? await inlineGallery(await inlineAssets(raw)) : structuredClone(raw);
+
+/* ---- YouTube Music playlists: bake the track list into the page (dist only, page.json stays clean) ---- */
+for (const w of data.widgets || []) {
+  const list = w.type === 'music' && playlistId(w.props?.url);
+  if (!list) continue;
+  try {
+    w.props._playlist = await fetchPlaylist(list);
+    console.log(`♫ ${w.props._playlist.title || list}: ${w.props._playlist.items.length} tracks (${w.props._playlist.source})`);
+  } catch (e) {
+    console.warn(`! playlist ${list}: ${e.message} — falling back to the YouTube player`);
+  }
+}
 
 /* ---- prerender with the exact browser code, in a sandbox ---- */
 const code = Object.fromEntries(await Promise.all(SCRIPTS.map(async (s) => [s, await src(s)])));

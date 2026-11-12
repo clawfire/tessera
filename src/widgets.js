@@ -153,6 +153,26 @@ window.Tessera = window.Tessera || {};
   /** True for pictographic characters (emoji), which carry their own colours. */
   U.isEmoji = (s) => /\p{Extended_Pictographic}/u.test(String(s || ''));
 
+  /** Playlist id from a YouTube / YouTube Music URL (null for single-video URLs). */
+  U.ytList = (url) => {
+    const u = String(url || '');
+    if (!/(?:youtube\.com|youtu\.be)\//.test(u) || /[?&]v=/.test(u)) return null;
+    return u.match(/[?&]list=([\w-]+)/)?.[1] || null;
+  };
+
+  /** Our own playlist view: cover + play button, title, scrollable track list. */
+  U.ytPlaylistHtml = (pl, list) => {
+    const cover = pl.items[0] ? `https://i.ytimg.com/vi/${encodeURIComponent(pl.items[0].v)}/hqdefault.jpg` : '';
+    const tracks = pl.items
+      .map((it, i) => `<li data-v="${esc(it.v)}"><button type="button" data-ytplay="${i}"><span class="n">${i + 1}</span><span class="tt"><span>${esc(it.t)}</span>${it.a ? `<small class="muted">${esc(it.a)}</small>` : ''}</span></button></li>`)
+      .join('');
+    return `<div class="ytpl-stage">${cover ? `<img class="ytpl-cover" src="${esc(cover)}" alt="" loading="lazy" onerror="this.remove()">` : ''}<div class="ytpl-player"></div>` +
+      `<button type="button" class="ytpl-play" data-ytplay="all" aria-label="${esc(T.tp('play'))}">▶</button></div>` +
+      `<div class="ytpl-side"><div class="ytpl-head"><strong>${esc(pl.title)}</strong>` +
+      `<a class="muted" href="https://music.youtube.com/playlist?list=${encodeURIComponent(list)}" target="_blank" rel="noopener">${esc([pl.author, `${pl.items.length} ${T.tp('tracks')}`].filter(Boolean).join(' · '))} ↗</a></div>` +
+      `<ol class="ytpl-tracks">${tracks}</ol></div>`;
+  };
+
   /* ---------- render helpers ---------- */
   const a = (href, inner, cls = '') => {
     const h = safeUrl(href);
@@ -257,6 +277,13 @@ window.Tessera = window.Tessera || {};
       { key: 'title', label: 'Title|Titre' }
     ],
     render(p) {
+      // YouTube / YouTube Music playlists: our own playlist view (track list baked in by the build or fetched by the dev server)
+      const list = U.ytList(p.url);
+      if (list) {
+        const pl = p._playlist || T.ytCache?.[list];
+        const fallback = `<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(list)}" title="${esc(p.title || 'Playlist')}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>`;
+        return `<div class="w-body ytpl" data-ytpl="${esc(list)}">${pl?.items?.length ? U.ytPlaylistHtml(pl, list) : fallback}</div>`;
+      }
       const e = U.musicEmbed(p.url);
       if (e) return iframe(e, p.title || 'Music', 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');
       const s = safeUrl(p.url);

@@ -137,6 +137,51 @@ small { font-size: 0.8rem; }
 @keyframes pin-pulse { 0% { transform: scale(.4); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
 
 .audio { justify-content: space-between; }
+
+/* YouTube Music playlist view */
+.ytpl { padding: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 0; }
+.ytpl > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.ytpl-stage { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+.ytpl-cover { width: 100%; height: 100%; object-fit: cover; }
+.ytpl-player { position: absolute; inset: 0; display: none; background: #000; }
+.ytpl-player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.ytpl.playing .ytpl-player { display: block; }
+.ytpl.playing .ytpl-play { display: none; }
+.ytpl-play {
+  position: absolute; right: 12px; bottom: 12px; width: 46px; height: 46px; border: 0; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; padding-left: 3px; font-size: 17px;
+  background: var(--accent); color: var(--on-accent); box-shadow: 0 6px 18px -6px rgb(0 0 0 / .6); transition: transform .15s;
+}
+.ytpl-play:hover { transform: scale(1.06); }
+.ytpl-side { display: flex; flex-direction: column; min-height: 0; padding: 12px 12px 0 14px; }
+.ytpl-head { display: flex; flex-direction: column; gap: 1px; padding-right: 4px; }
+.ytpl-head strong { font-size: .98rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ytpl-head a { font-size: .78rem; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ytpl-tracks { list-style: none; margin: 6px 0 0; padding: 0 0 10px; overflow-y: auto; min-height: 0; scrollbar-width: thin; position: relative; }
+.ytpl-tracks button {
+  all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 5px 6px; border-radius: 10px; cursor: pointer;
+}
+.ytpl-tracks button:hover, .ytpl-tracks button:focus-visible { background: color-mix(in srgb, currentColor 7%, transparent); }
+.ytpl-tracks .n { flex: none; width: 1.5em; text-align: right; font-size: .78rem; opacity: .5; font-variant-numeric: tabular-nums; }
+.ytpl-tracks .tt { display: flex; flex-direction: column; min-width: 0; }
+.ytpl-tracks .tt > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ytpl-tracks .tt > span { font-size: .88rem; font-weight: 600; }
+.ytpl-tracks .tt > small { font-size: .76rem; }
+.ytpl-tracks li.on button { color: var(--accent); }
+.tone-accent .ytpl-tracks li.on button, .tone-dark .ytpl-tracks li.on button { color: inherit; background: color-mix(in srgb, currentColor 14%, transparent); }
+.ytpl-tracks li.on .n { opacity: 1; font-size: 0; }
+.ytpl-tracks li.on .n::after { content: '♪'; font-size: .9rem; }
+.ytpl-tracks li.gone { opacity: .4; }
+.ytpl-tracks li.gone .tt > span { text-decoration: line-through; }
+/* short cards (2×1, 4×1): cover/player left, tracks right */
+.r2 .ytpl { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+.r2 .ytpl-stage { aspect-ratio: auto; height: 100%; }
+.c4.r2 .ytpl { grid-template-columns: auto minmax(0, 1fr); }
+.c4.r2 .ytpl-stage { aspect-ratio: 16 / 9; }
+/* tall cards: keep the track list the star — cover/player gets ~42% of the height */
+.r4 .ytpl { grid-template-rows: 42% minmax(0, 1fr); }
+.r4 .ytpl-stage { aspect-ratio: auto; height: 100%; }
 .audio audio { width: 100%; }
 
 .event { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; gap: 6px 16px; }
